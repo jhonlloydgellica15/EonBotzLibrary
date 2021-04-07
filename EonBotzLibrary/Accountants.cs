@@ -6,7 +6,7 @@ using System.Data;
 
 namespace EonBotzLibrary
 {
-    public class Students
+    public class Accountants
     {
         Connection connect = new Connection();
         MySqlConnection conn;
@@ -32,20 +32,18 @@ namespace EonBotzLibrary
 
         public DataTable dt = new DataTable();
 
-       
         private DataSet ds = new DataSet();
-
 
         public void CREATE_DATA()
         {
             conn = connect.getcon();
             conn.Open();
 
-            using(cmd = new MySqlCommand("INSERT INTO student(lastname,firstname,middlename,age,dateofbirth,placeofbirth,contactno,gender,maritalstatus,citizenship,religion,address)VALUES(" +
+            using (cmd = new MySqlCommand("INSERT INTO accountants(Lastname,Firstname,Middlename,Age,Dateofbirth,Placeofbirth,ContactNo,Gender,MaritalStatus,Citizenship,Religion,Address)VALUES(" +
                 "@lname,@fname,@mname,@age,@dob,@pob,@contact,@gender,@marital,@citizen,@religion,@address)", conn))
             {
                 cmd.Parameters.AddWithValue("@lname", lastname);
-                cmd.Parameters.AddWithValue("@fname",  firstname);
+                cmd.Parameters.AddWithValue("@fname", firstname);
                 cmd.Parameters.AddWithValue("@mname", middlename);
                 cmd.Parameters.AddWithValue("@age", age);
                 cmd.Parameters.AddWithValue("dob", dateofbirth);
@@ -57,19 +55,18 @@ namespace EonBotzLibrary
                 cmd.Parameters.AddWithValue("@religion", religion);
                 cmd.Parameters.AddWithValue("@address", address);
                 cmd.ExecuteNonQuery();
-                
+
             }
             conn.Close();
         }
-
 
         public void UPDATE_DATA()
         {
             conn = connect.getcon();
             conn.Open();
 
-            using(cmd = new MySqlCommand("update student set lastname=@lname, firstname=@fname, middlename=@mname, age=@age, dateofbirth=@dob, placeofbirth=@pob," +
-                "contactno=@contact,gender=@gender, maritalstatus=@marital, citizenship=@citizen, religion=@religion, address=@address WHERE studentId=@id", conn))
+            using (cmd = new MySqlCommand("update accountants set lastname=@lname, firstname=@fname, middlename=@mname, age=@age, dateofbirth=@dob, placeofbirth=@pob," +
+                "contactno=@contact,gender=@gender, maritalstatus=@marital, citizenship=@citizen, religion=@religion, address=@address WHERE accountantId=@id", conn))
             {
                 cmd.Parameters.AddWithValue("id", id);
                 cmd.Parameters.AddWithValue("@lname", lastname);
@@ -92,9 +89,8 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT * from student", conn))
+            using (cmd = new MySqlCommand("SELECT * from accountants", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -123,7 +119,7 @@ namespace EonBotzLibrary
                 while (mdr.Read())
                 {
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString()
-                        , mdr[8].ToString(), mdr[9].ToString(), mdr[10].ToString(), mdr[11].ToString(), mdr[12].ToString());
+                    , mdr[8].ToString(), mdr[9].ToString(), mdr[10].ToString(), mdr[11].ToString(), mdr[12].ToString());
                 }
             }
         }
@@ -133,8 +129,8 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            
-            using(cmd = new MySqlCommand("SELECT * FROM student WHERE studentId LIKE @id", conn))
+
+            using (cmd = new MySqlCommand("SELECT * FROM accountants WHERE accountantId LIKE @id", conn))
             {
 
                 cmd.Parameters.AddWithValue("@id", id);
@@ -161,6 +157,4 @@ namespace EonBotzLibrary
             }
         }
     }
-
-
 }

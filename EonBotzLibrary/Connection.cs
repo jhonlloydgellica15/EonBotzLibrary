@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace EonBotzLibrary
 {
-    class Connection
+    public class Connection
     {
         MySqlConnection conn;
 
