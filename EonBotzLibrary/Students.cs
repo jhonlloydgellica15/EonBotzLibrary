@@ -12,7 +12,6 @@ namespace EonBotzLibrary
         MySqlConnection conn;
         MySqlCommand cmd;
         MySqlDataReader mdr;
-        MySqlDataAdapter msda;
 
 
         public string id { set; get; }

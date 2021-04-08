@@ -12,7 +12,6 @@ namespace EonBotzLibrary
         MySqlConnection conn;
         MySqlCommand cmd;
         MySqlDataReader mdr;
-        MySqlDataAdapter msda;
 
 
         public string id { set; get; }
@@ -73,7 +72,7 @@ namespace EonBotzLibrary
                 cmd.Parameters.AddWithValue("@fname", firstname);
                 cmd.Parameters.AddWithValue("@mname", middlename);
                 cmd.Parameters.AddWithValue("@age", age);
-                cmd.Parameters.AddWithValue("dob", dateofbirth);
+                cmd.Parameters.AddWithValue("@dob", dateofbirth);
                 cmd.Parameters.AddWithValue("@pob", placeofbirth);
                 cmd.Parameters.AddWithValue("@contact", contactno);
                 cmd.Parameters.AddWithValue("@gender", gender);
