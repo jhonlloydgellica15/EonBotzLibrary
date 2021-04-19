@@ -3,30 +3,39 @@ using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
 using System.Data;
+
 namespace EonBotzLibrary
 {
-    public class Room
+    public class FeeCategory
     {
-
         Connection connect = new Connection();
         MySqlConnection conn;
         MySqlCommand cmd;
         MySqlDataReader mdr;
 
+        public string id { set; get; }
+        public string category { set; get; }
+        public string subcategory { set; get; }
+
+        public string description { set; get; }
+        public string amount { set; get; }
+        public string curriculum { set; get; }
         public DataTable dt = new DataTable();
 
-        public string id { set; get; }
-        public string description { set; get; }
 
-//Hello
         public void CREATE_DATA()
         {
             conn = connect.getcon();
             conn.Open();
+            
 
-            using(cmd = new MySqlCommand("INSERT INTO rooms(description)VALUES(@desc)", conn))
+            using(cmd = new MySqlCommand("INSERT INTO feecategories(category,subcategory,description, amount,curriculumID)VALUES(@categ, @sub, @desc,@amount,@curri)", conn))
             {
-                cmd.Parameters.AddWithValue("@desc", description);
+                cmd.Parameters.AddWithValue("@categ", description);
+                cmd.Parameters.AddWithValue("@sub", category);
+                cmd.Parameters.AddWithValue("@desc",description);
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@curri", curriculum);
                 cmd.ExecuteNonQuery();
             }
             conn.Close();
@@ -37,22 +46,20 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            using (cmd = new MySqlCommand("update rooms set description=@desc WHERE roomId=@id", conn))
+            using (cmd = new MySqlCommand("update feecategories set description=@desc WHERE feeID=@id", conn))
             {
                 cmd.Parameters.AddWithValue("id", id);
                 cmd.Parameters.AddWithValue("@desc", description);
-
                 cmd.ExecuteNonQuery();
             }
         }
-
         public void VIEW_DATA()
         {
             conn = connect.getcon();
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT * from rooms", conn))
+            using (cmd = new MySqlCommand("SELECT * from feecategories", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -65,11 +72,15 @@ namespace EonBotzLibrary
 
                 dt.Columns.Clear();
                 dt.Columns.Add("ID");
+                dt.Columns.Add("Category");
+                dt.Columns.Add("SubCategory");
                 dt.Columns.Add("Description");
+                dt.Columns.Add("Amount");
+                dt.Columns.Add("CurriculumID");
 
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString());
                 }
             }
         }
@@ -80,7 +91,7 @@ namespace EonBotzLibrary
             conn.Open();
 
 
-            using (cmd = new MySqlCommand("SELECT * FROM rooms WHERE roomId LIKE @id", conn))
+            using (cmd = new MySqlCommand("SELECT * FROM feecategories WHERE feeID LIKE @id", conn))
             {
 
                 cmd.Parameters.AddWithValue("@id", id);
@@ -89,34 +100,15 @@ namespace EonBotzLibrary
 
                 if (mdr.HasRows)
                 {
-                    description = mdr[1].ToString();
+                    category = mdr[1].ToString();
+                    subcategory = mdr[2].ToString();
+                    description = mdr[3].ToString();
+                    amount = mdr[4].ToString();
+                    curriculum = mdr[5].ToString();
                 }
                 mdr.Close();
                 conn.Close();
             }
-        }
-
-        public void showRoomUsed()
-        {
-            conn = connect.getcon();
-            conn.Open();
-
-            dt.Clear();
-            using (cmd = new MySqlCommand("SELECT date, timeStart, timeEnd, roomID FROM schedule ", conn))
-            {
-                dt.Columns.Clear();
-                dt.Columns.Add("ID");
-                dt.Columns.Add("Day");
-                dt.Columns.Add("Schedule");
-                dt.Columns.Add("Room");
-
-                while (mdr.Read())
-                {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString() + mdr[2].ToString(), mdr[3].ToString());
-                }
-            }
-
-            conn.Close();
         }
     }
 }

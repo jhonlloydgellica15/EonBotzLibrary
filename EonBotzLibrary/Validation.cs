@@ -8,7 +8,7 @@ namespace EonBotzLibrary
 {
     public class Validity
     {
-        public bool isEmpty(TextBox[] values)
+        public static bool isEmpty(TextBox[] values)
         {
             foreach(var value in values)
             {

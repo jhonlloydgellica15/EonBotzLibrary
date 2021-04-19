@@ -45,45 +45,35 @@ namespace EonBotzLibrary
 
 
 
-            //cmd = new MySqlCommand("select date from schedule where date regexp '["+date+"]'", conn);
-            //{
-            //    mdr = cmd.ExecuteReader();
-
-            //    while (mdr.Read())
-            //    {
-            //        timediff = mdr[0].ToString();
-            //    }
-            //    conn.Close();
-            //}
-            cmd = new MySqlCommand(" select timeend from schedule where roomid = '"+roomid+"'and date regexp'["+date+ "]'and timestart between '" + timeStart + "'and timestart   <='" + timeEnd + "' and timeend between'" + timeStart + "'and timeend <='" + timeEnd + "'", conn);
+            cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart >= '" + timeStart + "'and timestart   <='" + timeEnd + "' and timeend >='" + timeStart + "'and timeend <='" + timeEnd + "'", conn);
             {
                 mdr = cmd.ExecuteReader();
 
                 while (mdr.Read())
                 {
                     timediff = mdr[0].ToString();
-
                 }
                 conn.Close();
             }
+          
         }
         public void tuesday()
         {
+            timediff = "aa";
+            //conn = connect.getcon();
+            //conn.Open();
 
-            conn = connect.getcon();
-            conn.Open();
+            //cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date = 'th' and timestart between '" + timeStart + "'and timestart   <='" + timeEnd + "' and timeend between'" + timeStart + "'and timeend <='" + timeEnd + "'", conn);
+            //{
+            //    mdr = cmd.ExecuteReader();
 
-            cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date = 'th' and timestart between '" + timeStart + "'and timestart   <='" + timeEnd + "' and timeend between'" + timeStart + "'and timeend <='" + timeEnd + "'", conn);
-            {
-                mdr = cmd.ExecuteReader();
+            //    while (mdr.Read())
+            //    {
+            //        timedifftuesday = "wew";
 
-                while (mdr.Read())
-                {
-                    timedifftuesday = "wew";
-
-                }
-                conn.Close();
-            }
+            //    }
+            //    conn.Close();
+            //}
         }
         public void Schedule()
         {
@@ -231,6 +221,7 @@ namespace EonBotzLibrary
                 //}
 
                 dt.Columns.Clear();
+               
                 dt.Columns.Add("SchedID");
                 dt.Columns.Add("SubjectCode");
                 dt.Columns.Add("CourseID");
