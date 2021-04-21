@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -29,13 +29,9 @@ namespace EonBotzLibrary
             conn.Open();
             
 
-            using(cmd = new MySqlCommand("INSERT INTO feecategories(category,subcategory,description, amount,curriculumID)VALUES(@categ, @sub, @desc,@amount,@curri)", conn))
+            using(cmd = new MySqlCommand("INSERT INTO feecategories(category)VALUES(@categ)", conn))
             {
-                cmd.Parameters.AddWithValue("@categ", description);
-                cmd.Parameters.AddWithValue("@sub", category);
-                cmd.Parameters.AddWithValue("@desc",description);
-                cmd.Parameters.AddWithValue("@amount", amount);
-                cmd.Parameters.AddWithValue("@curri", curriculum);
+                cmd.Parameters.AddWithValue("@categ", category);
                 cmd.ExecuteNonQuery();
             }
             conn.Close();

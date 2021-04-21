@@ -59,7 +59,6 @@ namespace EonBotzLibrary
                 //dt.Columns.Add("Name", typeof(string));
                 //while (mdr.Read())
                 //{
-
                 //    dt.Rows.Add(mdr[0].ToString() + " , " + mdr[1].ToString());
                 //}
 
@@ -82,7 +81,6 @@ namespace EonBotzLibrary
 
             using (cmd = new MySqlCommand("SELECT * FROM rooms WHERE roomId LIKE @id", conn))
             {
-
                 cmd.Parameters.AddWithValue("@id", id);
                 mdr = cmd.ExecuteReader();
                 mdr.Read();
@@ -115,7 +113,6 @@ namespace EonBotzLibrary
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString() + mdr[2].ToString(), mdr[3].ToString());
                 }
             }
-
             conn.Close();
         }
     }

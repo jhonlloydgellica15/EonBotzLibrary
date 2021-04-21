@@ -22,24 +22,5 @@ namespace EonBotzLibrary
             return conn;
         }
 
-        //public string QuerySelect(string table = "", string key = "", string value = "")
-        //{
-
-        //    if (!table.Equals(""))
-        //    {
-        //        res = "RESULT";
-        //        cmd = new MySqlCommand($"SELECT *  FROM {table} ", getcon()); //select query
-        //        dr = cmd.ExecuteReader(); // execute query
-
-        //        return res; // return result
-
-
-        //    }
-
-
-        //    return res;
-
-        //}
-
     }
 }
