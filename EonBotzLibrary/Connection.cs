@@ -16,9 +16,8 @@ namespace EonBotzLibrary
 
         public MySqlConnection getcon()
         {
-            conn = new MySqlConnection("server=localhost;user id=root;password=eonbotz;port=3306;database=smsdb");
+            conn = new MySqlConnection("server=localhost;user id=root; password=12345;database=smsdb;port=3306");
         
-
             return conn;
         }
 
