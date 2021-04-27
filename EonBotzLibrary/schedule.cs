@@ -224,20 +224,19 @@ namespace EonBotzLibrary
                
                 dt.Columns.Add("SchedID");
                 dt.Columns.Add("SubjectCode");
+                dt.Columns.Add("RoomID");
                 dt.Columns.Add("CourseID");
                 dt.Columns.Add("date");
                 dt.Columns.Add("maxStudent");
                 dt.Columns.Add("status");
                 dt.Columns.Add("time start");
                 dt.Columns.Add("time end");
-      
-
+                
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString());
                 }
             }
-
         }
     }
 }
