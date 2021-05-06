@@ -90,7 +90,7 @@ namespace EonBotzLibrary
             {
                 if (date.Value.Date >= DateTime.Now.Date)
                 {
-                    AlertDanger("Please select not greater than or equal to current date");
+                    AlertDanger("Please select not greater than or not equal to current date");
                     return false;
                 }
             }

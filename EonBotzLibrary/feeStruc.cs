@@ -12,6 +12,8 @@ namespace EonBotzLibrary
         public string structuredescrip { set; get; }
         public string total { set; get; }
         public string categoryID { set; get; }
+        public string getcatid { set; get; }
+        public string getcat { set; get; }
         public string category { set; get; }
         public string id { set; get; }
         public string amount { set; get; }
@@ -46,6 +48,18 @@ namespace EonBotzLibrary
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString());
                 }
             }
+        }
+        public void getid()
+        {
+            conn = connect.getcon();
+            conn.Open();
+            cmd = new MySqlCommand("select distinct a.categoryid from totalfee a, categoryfee b  where b.category = '" + getcat + "' and a.categoryid = b.categoryid  ",conn);
+            mdr = cmd.ExecuteReader();
+            while(mdr.Read())
+            {
+                getcatid = mdr[0].ToString();
+            }    
+
         }
 
         public void viewcategory()
