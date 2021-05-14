@@ -8,14 +8,40 @@ namespace EonBotzLibrary
 {
     public static class Validator
     {
+
+        //Disable all textbox
+
+        public static void disableTextbox(TextBox[] values)
+        {
+            foreach(var value in values)
+            {
+                value.Enabled = false;
+            }
+        }
+
+        //Check if combobox is empty
+        public static bool isEmptyCmb(ComboBox[] values)
+        {
+            foreach(var value in values)
+            {
+                if (value.Text.Equals(""))
+                {
+                    AlertDanger($"{value.Name.Substring(3)} must not be empty");
+                    return false;
+                }
+            }
+            return true;
+        }
+
         //Check if textbox is empty function
+
         public static bool isEmpty(TextBox[] values)
         {
             foreach (var value in values)
             {
                 if (value.Text.Equals(""))
                 {
-                    MessageBox.Show($"{value.Name.Substring(3)} must not be empty");
+                    AlertDanger($"{value.Name.Substring(3)} must not be empty");
                     return false;
                 }
             }

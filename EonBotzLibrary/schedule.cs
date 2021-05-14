@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
 using System.Data;
+using SqlKata.Execution;
 namespace EonBotzLibrary
 {
     public class schedule
@@ -31,7 +32,7 @@ namespace EonBotzLibrary
         public string course { set; get; }
         public string timeending { set; get; }
         public string timedifftuesday { set; get; }
-
+       
 
         public DataTable dt = new DataTable();
 
@@ -43,8 +44,6 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-
-
             cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart >= '" + timeStart + "'and timestart   <='" + timeEnd + "' and timeend >='" + timeStart + "'and timeend <='" + timeEnd + "'", conn);
             {
                 mdr = cmd.ExecuteReader();
@@ -55,25 +54,10 @@ namespace EonBotzLibrary
                 }
                 conn.Close();
             }
-          
         }
         public void tuesday()
         {
             timediff = "aa";
-            //conn = connect.getcon();
-            //conn.Open();
-
-            //cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date = 'th' and timestart between '" + timeStart + "'and timestart   <='" + timeEnd + "' and timeend between'" + timeStart + "'and timeend <='" + timeEnd + "'", conn);
-            //{
-            //    mdr = cmd.ExecuteReader();
-
-            //    while (mdr.Read())
-            //    {
-            //        timedifftuesday = "wew";
-
-            //    }
-            //    conn.Close();
-            //}
         }
         public void Schedule()
         {
@@ -108,7 +92,6 @@ namespace EonBotzLibrary
                 }
                 conn.Close();
             }
-
 
             conn = connect.getcon();
             conn.Open();
@@ -207,21 +190,13 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-
             dt.Clear();
             using (cmd = new MySqlCommand("SELECT * from schedule", conn))
             {
                 mdr = cmd.ExecuteReader();
 
-                //dt.Columns.Add("Name", typeof(string));
-                //while (mdr.Read())
-                //{
-
-                //    dt.Rows.Add(mdr[0].ToString() + " , " + mdr[1].ToString());
-                //}
-
                 dt.Columns.Clear();
-               
+
                 dt.Columns.Add("SchedID");
                 dt.Columns.Add("SubjectCode");
                 dt.Columns.Add("RoomID");
@@ -231,10 +206,48 @@ namespace EonBotzLibrary
                 dt.Columns.Add("status");
                 dt.Columns.Add("time start");
                 dt.Columns.Add("time end");
-                
+
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString());
+                    string foo = mdr[4].ToString(), bar = string.Empty;
+                    string roomID = mdr[2].ToString();
+                    string courseID = mdr[3].ToString();
+
+
+                    var roomDesc = DBContext.GetContext().Query("rooms").Where("roomId", roomID).First();
+                    var value = DBContext.GetContext().Query("course").Where("courseId", courseID).First();
+
+
+
+                    foreach (char c in foo)
+                    {
+                        if (c == '1')
+                        {
+                            bar += "M";
+                        }
+                        else if (c == '2')
+                        {
+                            bar += "T";
+                        }
+                        else if (c == '3')
+                        {
+                            bar += "W";
+                        }
+                        else if (c == '4')
+                        {
+                            bar += "Th";
+                        }
+                        else if (c == '5')
+                        {
+                            bar += "F";
+                        }
+                        else if (c == '6')
+                        {
+                            bar += "S";
+                        }
+                    }
+
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), roomDesc.description, value.description, bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString());
                 }
             }
         }
