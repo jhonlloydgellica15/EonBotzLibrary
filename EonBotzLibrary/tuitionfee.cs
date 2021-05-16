@@ -18,6 +18,8 @@ namespace EonBotzLibrary
         public string subjectcode { set; get; }
         public string categoryID { set; get; }
         public string category { set; get; }
+        public string id { set; get; }
+        public string total { set; get; }
 
         public void view()
         {
@@ -89,9 +91,57 @@ namespace EonBotzLibrary
         }
         public void selectQuery()
         {
+            conn = connect.getcon();
+            conn.Open();
 
+            dt.Clear();
+            using (cmd = new MySqlCommand("SELECT a.subjectcode,b.totalPrice FROM smsdb.tuition a, subjects b where a.subjectCode = b.subjectcode and tuitionCatID = '"+id+"'", conn))
+            {
+                mdr = cmd.ExecuteReader();
+
+
+
+                dt.Columns.Clear();
+                dt.Columns.Add("subjectcode");
+                dt.Columns.Add("amount");
+            
+
+
+
+                while (mdr.Read())
+                {
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
+                  
+                }
+            }
 
         }
+
+        public void selectQuery2()
+        {
+            conn = connect.getcon();
+            conn.Open();
+
+            dt.Clear();
+            using (cmd = new MySqlCommand("SELECT sum(b.totalprice) FROM smsdb.tuition a, subjects b where a.subjectCode = b.subjectcode and tuitionCatID = '" + id + "'", conn))
+            {
+                mdr = cmd.ExecuteReader();
+
+
+
+
+
+
+
+                while (mdr.Read())
+                {
+                    //dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
+                    total = mdr[0].ToString();
+                }
+            }
+
+        }
+
 
 
     }
