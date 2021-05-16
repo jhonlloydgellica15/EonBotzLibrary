@@ -26,20 +26,23 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT distinct a.schedid,a.subjectCode,d.name,a.timestart,a.timeend,a.date,a.maxStudent,a.status FROm schedule a ,tuition b,tuitioncategory c,rooms d where a.subjectcode = b.subjectcode and b.tuitioncatid = c.tuitionCatID and d.roomid = a.roomid and c.category ='" + category+"'", conn))
+            using (cmd = new MySqlCommand("SELECT a.subjectCode,e.subjectTitle,d.name,a.timestart,a.timeend,a.date,a.maxStudent,a.status ,e.lab,e.lec FROm subjects e, schedule a ,tuition b,tuitioncategory c,rooms d where a.subjectcode = b.subjectcode and b.tuitioncatid = c.tuitionCatID and d.roomid = a.roomid and e.subjectcode = b.subjectcode and c.category ='" + category+ "'group by a.schedId", conn))
             {
                 mdr = cmd.ExecuteReader();
 
                 dt.Columns.Clear();
 
-                dt.Columns.Add("SchedId");
+                
                 dt.Columns.Add("SubjectCode");
+                dt.Columns.Add("SubjectTitle");
                 dt.Columns.Add("RoomName");
                 dt.Columns.Add("Timestart");
                 dt.Columns.Add("Timeend");
                 dt.Columns.Add("Day");
                 dt.Columns.Add("MaxStudent");
                 dt.Columns.Add("Status");
+                dt.Columns.Add("lablec");
+
                 while (mdr.Read())
                 {
                     string foo = mdr[5].ToString(), bar = string.Empty;
@@ -73,7 +76,7 @@ namespace EonBotzLibrary
                     }
 
 
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), bar, mdr[6].ToString(), mdr[7].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), bar, mdr[6].ToString(), mdr[7].ToString(),mdr[9].ToString()+"/"+mdr[8].ToString());
                 }
             }
         }
