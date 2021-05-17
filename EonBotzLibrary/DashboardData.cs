@@ -21,7 +21,6 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
             
-
             using(cmd = new MySqlCommand("SELECT COUNT(*) FROM student", conn))
             {
                 mdr = cmd.ExecuteReader();
