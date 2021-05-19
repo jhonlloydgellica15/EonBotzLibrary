@@ -74,7 +74,6 @@ namespace EonBotzLibrary
                             bar += "S";
                         }
                     }
-                    //dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), bar, mdr[6].ToString(), mdr[7].ToString(),mdr[8].ToString(),mdr[10].ToString()+"/"+mdr[9].ToString());
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[4].ToString(), mdr[5].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[10].ToString() + "/" + mdr[9].ToString());
                 }
             }
