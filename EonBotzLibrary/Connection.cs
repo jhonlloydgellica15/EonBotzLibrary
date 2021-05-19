@@ -12,8 +12,6 @@ namespace EonBotzLibrary
           public MySqlDataReader dr;
           public string res;
 
-
-
         public MySqlConnection getcon()
         {
             conn = new MySqlConnection("server=localhost;user id=root; password=12345;database=smsdb;port=3306");
