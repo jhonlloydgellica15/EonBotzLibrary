@@ -44,7 +44,7 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            cmd = new MySqlCommand("select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart >= '" + timeStart + "'and timestart   <='" + timeEnd + "' and timeend >='" + timeStart + "'and timeend <='" + timeEnd + "'", conn);
+            cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart >= '" + timeStart + "'and timestart   <='" + timeEnd + "' and timeend >='" + timeStart + "'and timeend <='" + timeEnd + "'", conn);
             {
                 mdr = cmd.ExecuteReader();
 
