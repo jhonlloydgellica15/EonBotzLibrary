@@ -95,52 +95,41 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT a.subjectcode,b.totalPrice FROM smsdb.tuition a, subjects b where a.subjectCode = b.subjectcode and tuitionCatID = '"+id+"'", conn))
+            using (cmd = new MySqlCommand("SELECT c.schedID , a.subjectcode FROM smsdb.tuition a, subjects b, schedule c where a.subjectCode = b.subjectcode and a.schedID = c.schedID and tuitionCatID = '" + id + "'", conn))
             {
                 mdr = cmd.ExecuteReader();
 
-
-
                 dt.Columns.Clear();
+                dt.Columns.Add("schedID");
                 dt.Columns.Add("subjectcode");
-                dt.Columns.Add("amount");
-            
-
-
 
                 while (mdr.Read())
                 {
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
-                  
+
                 }
             }
 
         }
 
-        public void selectQuery2()
-        {
-            conn = connect.getcon();
-            conn.Open();
+        //public void selectQuery2()
+        //{
+        //    conn = connect.getcon();
+        //    conn.Open();
 
-            dt.Clear();
-            using (cmd = new MySqlCommand("SELECT sum(b.totalprice) FROM smsdb.tuition a, subjects b where a.subjectCode = b.subjectcode and tuitionCatID = '" + id + "'", conn))
-            {
-                mdr = cmd.ExecuteReader();
+        //    dt.Clear();
+        //    using (cmd = new MySqlCommand("SELECT sum(b.totalprice) FROM smsdb.tuition a, subjects b where a.subjectCode = b.subjectcode and tuitionCatID = '" + id + "'", conn))
+        //    {
+        //        mdr = cmd.ExecuteReader();
 
+        //        while (mdr.Read())
+        //        {
+        //            //dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
+        //            total = mdr[0].ToString();
+        //        }
+        //    }
 
-
-
-
-
-
-                while (mdr.Read())
-                {
-                    //dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
-                    total = mdr[0].ToString();
-                }
-            }
-
-        }
+        //}
 
 
 

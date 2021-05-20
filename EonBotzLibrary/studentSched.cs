@@ -26,7 +26,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-           using (cmd = new MySqlCommand(" select  a.tuitioncatid, a.subjectcode ,b.date ,b.roomid , b.timestart ,b.timeend from tuition a,schedule b,tuitioncategory c where c.tuitioncatid=a.tuitioncatid and a.subjectcode = b.subjectcode and c.category ='"+category+"' group by b.subjectcode", conn))
+            using (cmd = new MySqlCommand("SELECT a.schedId, a.subjectCode,e.subjectTitle,d.name,a.timestart,a.timeend,a.date,a.maxStudent,a.status ,e.lab,e.lec FROm subjects e, schedule a ,tuition b,tuitioncategory c,rooms d where a.subjectcode = b.subjectcode and b.tuitioncatid = c.tuitionCatID and d.roomid = a.roomid and e.subjectcode = b.subjectcode and c.category ='" + category+ "'group by a.schedId", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -36,16 +36,16 @@ namespace EonBotzLibrary
                 dt.Columns.Add("SubjectCode");
                 dt.Columns.Add("SubjectTitle");
                 dt.Columns.Add("RoomName");
+                dt.Columns.Add("Day");
                 dt.Columns.Add("Timestart");
                 dt.Columns.Add("Timeend");
-                dt.Columns.Add("Day");
                 dt.Columns.Add("MaxStudent");
                 dt.Columns.Add("Status");
                 dt.Columns.Add("lablec");
 
                 while (mdr.Read())
                 {
-                    string foo = mdr[6].ToString(), bar = string.Empty;
+                    string foo = mdr[4].ToString(), bar = string.Empty;
 
                     foreach (char c in foo)
                     {
@@ -74,7 +74,7 @@ namespace EonBotzLibrary
                             bar += "S";
                         }
                     }
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[4].ToString(), mdr[5].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[10].ToString() + "/" + mdr[9].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[10].ToString() + "/" + mdr[9].ToString());
                 }
             }
         }
