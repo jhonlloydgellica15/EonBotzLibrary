@@ -9,7 +9,7 @@ namespace EonBotzLibrary
     {
         public string structurename { set; get; }
         public string structureID { set; get; }
-        public string structuredescrip { set; get; }
+        public string structuredescrip { set; get; }    
         public string total { set; get; }
         public string categoryID { set; get; }
         public string getcatid { set; get; }

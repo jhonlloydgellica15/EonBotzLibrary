@@ -9,6 +9,10 @@ namespace EonBotzLibrary
     public static class Validator
     {
 
+
+
+
+
         //Disable all textbox
 
         public static void disableTextbox(TextBox[] values)
@@ -16,8 +20,12 @@ namespace EonBotzLibrary
             foreach(var value in values)
             {
                 value.Enabled = false;
-            }
+            } 
+
+          
         }
+
+
 
         //Check if combobox is empty
         public static bool isEmptyCmb(ComboBox[] values)
