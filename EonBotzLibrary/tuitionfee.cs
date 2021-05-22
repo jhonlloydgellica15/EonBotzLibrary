@@ -27,11 +27,9 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
- using (cmd = new MySqlCommand("SELECT distinct a.tuitionCatID, a.category,(select count(c.subjectcode) from tuition b, subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totallecprice) from tuition b, subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totallabprice) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totalunits) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totalprice) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode)from tuitioncategory a ,tuition b, subjects c group by a.tuitioncatid,b.tuitioncatid,c.subjectcode", conn))
+            using (cmd = new MySqlCommand("SELECT distinct a.tuitionCatID, a.category,(select count(c.subjectcode) from tuition b, subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select sum(c.totallecprice) from tuition b, subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totallabprice) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totalunits) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totalprice) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode)from tuitioncategory a ,tuition b, subjects c group by a.tuitioncatid,b.tuitioncatid,c.subjectcode", conn))
             {
                 mdr = cmd.ExecuteReader();
-
-
 
                 dt.Columns.Clear();
                 dt.Columns.Add("ID");
@@ -45,7 +43,7 @@ namespace EonBotzLibrary
 
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(),mdr[5].ToString(), mdr[6].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString());
                 }
             }
         }

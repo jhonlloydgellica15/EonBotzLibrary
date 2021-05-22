@@ -19,79 +19,15 @@ namespace EonBotzLibrary
         public string teacherID { set; get; }
         public string subjectcode { set; get; }
 
+        public string getSchedID { set; get; }
+
         public void viewteachsubj()
         {
             conn = connect.getcon();
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode,a.date, a.timestart,a.timeend,b.name from schedule a ,rooms b where b.roomid = a.roomid  and schedid = '" + subjectcode+"'", conn))
-            {
-                mdr = cmd.ExecuteReader();
-
-                //dt.Columns.Add("Name", typeof(string));
-                //while (mdr.Read())
-                //{
-
-                //    dt.Rows.Add(mdr[0].ToString() + " , " + mdr[1].ToString());
-                //}
-
-              //  dt.Columns.Clear();
-                dt.Columns.Add("subjectcode");
-               dt.Columns.Add("date");
-                dt.Columns.Add("timstart");
-                dt.Columns.Add("timeend");
-                dt.Columns.Add("room");
-
-                dt.Columns.Add("schedid");
-
-
-
-                while (mdr.Read())
-                {
-
-                  
-                        string foo = mdr[1].ToString(), bar = string.Empty;
-
-                        foreach (char c in foo)
-                        {
-                            if (c == '1')
-                            {
-                                bar += "M";
-                            }
-                            else if (c == '2')
-                            {
-                                bar += "T";
-                            }
-                            else if (c == '3')
-                            {
-                                bar += "W";
-                            }
-                            else if (c == '4')
-                            {
-                                bar += "Th";
-                            }
-                            else if (c == '5')
-                            {
-                                bar += "F";
-                            }
-                            else if (c == '6')
-                            {
-                                bar += "S";
-                            }
-                        }
-                        dt.Rows.Add(mdr[0].ToString(), bar.ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString());
-                }
-            }
-        }
-        public void viewstudent()
-        {
-
-            conn = connect.getcon();
-            conn.Open();
-
-            dt.Clear();
-            using (cmd = new MySqlCommand("SELECT  from teachers", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode,b.description,a.date, a.timestart,a.timeend from schedule a ,rooms b where b.roomid = a.roomid  and schedid = '" + subjectcode + "'", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -103,27 +39,74 @@ namespace EonBotzLibrary
                 //}
 
                 dt.Columns.Clear();
-                dt.Columns.Add("ID");
-                dt.Columns.Add("Lastname");
-                dt.Columns.Add("Firstname");
-                dt.Columns.Add("Middlename");
-                dt.Columns.Add("Age");
-                dt.Columns.Add("DateOfBirth");
-                dt.Columns.Add("PlaceOfBirth");
-                dt.Columns.Add("ContactNo");
-                dt.Columns.Add("Gender");
-                dt.Columns.Add("MaritalStatus");
-                dt.Columns.Add("Citizen");
-                dt.Columns.Add("Religion");
-                dt.Columns.Add("Address");
+                dt.Columns.Add("SchedID");
+                dt.Columns.Add("SubjectCode");
+                dt.Columns.Add("Room");
+                dt.Columns.Add("Day");
+                dt.Columns.Add("TimeStart");
+                dt.Columns.Add("TimeEnd");
 
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString()
-                        , mdr[8].ToString(), mdr[9].ToString(), mdr[10].ToString(), mdr[11].ToString(), mdr[12].ToString());
+
+
+                    string foo = mdr[3].ToString(), bar = string.Empty;
+
+                    foreach (char c in foo)
+                    {
+                        if (c == '1')
+                        {
+                            bar += "M";
+                        }
+                        else if (c == '2')
+                        {
+                            bar += "T";
+                        }
+                        else if (c == '3')
+                        {
+                            bar += "W";
+                        }
+                        else if (c == '4')
+                        {
+                            bar += "Th";
+                        }
+                        else if (c == '5')
+                        {
+                            bar += "F";
+                        }
+                        else if (c == '6')
+                        {
+                            bar += "S";
+                        }
+                    }
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), bar.ToString(), mdr[4].ToString(), mdr[5].ToString());
+                }
+            }
+        }
+        public void viewstudent()
+        {
+
+            conn = connect.getcon();
+            conn.Open();
+
+            dt.Clear();
+            using (cmd = new MySqlCommand("select a.studentid,c.firstname, c.middlename, c.lastname, c.course from studentSched a , teachersched b, student c where a.studentid = c.studentid and b.teacherid = '" + teacherID + "'  and a.schedId  like '%" + getSchedID + "%' and b.schedid  like '%" + getSchedID + "%'", conn))
+            {
+                mdr = cmd.ExecuteReader();
+
+                dt.Columns.Clear();
+                dt.Columns.Add("ID");
+                dt.Columns.Add("Name");
+                dt.Columns.Add("Course");
+
+
+                while (mdr.Read())
+                {
+                    var value = DBContext.GetContext().Query("course").Where("courseId", mdr[4].ToString()).First();
+                    dt.Rows.Add(mdr[0].ToString(), $"{mdr[1].ToString()} {mdr[2].ToString()} {mdr[3].ToString()}", value.abbreviation);
                 }
             }
         }
     }
-  
+
 }

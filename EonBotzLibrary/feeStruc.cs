@@ -29,11 +29,9 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT distinct  a.structureID,a.structureName,a.description,count( c.categoryid )as count, sum( c.total)as total FROM smsdb.feestructure a,smsdb.categoryfee b, smsdb.totalfee c  where  a.structureID = c.structureID  group by  c.structureID,a.structureID,b.categoryid", conn))
+            using (cmd = new MySqlCommand("SELECT distinct a.structureID,a.structureName,a.description,count( c.categoryid )as count, sum( c.total)as total FROM smsdb.feestructure a,smsdb.categoryfee b, smsdb.totalfee c  where  a.structureID = c.structureID  group by  c.structureID,a.structureID,b.categoryid", conn))
             {
                 mdr = cmd.ExecuteReader();
-
-
 
                 dt.Columns.Clear();
                 dt.Columns.Add("ID");
@@ -93,7 +91,7 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            using (cmd = new MySqlCommand("select    a.category, b.total from categoryfee a, totalfee b where b.structureid ='" + structureID + "' and a.categoryid = b.categoryid group by b.totalfeeid", conn))
+            using (cmd = new MySqlCommand("select a.category, b.total from categoryfee a, totalfee b where b.structureid ='" + structureID + "' and a.categoryid = b.categoryid group by b.totalfeeid", conn))
             {
                 mdr = cmd.ExecuteReader();
                 dt.Columns.Clear();
@@ -110,7 +108,7 @@ namespace EonBotzLibrary
 
                     conn = connect.getcon();
                     conn.Open();
-                    cmd = new MySqlCommand("select   sum(b.total),count(b.total) from categoryfee a, totalfee b where b.structureid ='"+structureID+"' and a.categoryid = b.categoryid", conn);
+                    cmd = new MySqlCommand("select sum(b.total),count(b.total) from categoryfee a, totalfee b where b.structureid ='"+structureID+"' and a.categoryid = b.categoryid", conn);
                     mdr = cmd.ExecuteReader();
                     while (mdr.Read())
                     {
