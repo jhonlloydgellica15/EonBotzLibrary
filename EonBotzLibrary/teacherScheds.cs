@@ -31,13 +31,6 @@ namespace EonBotzLibrary
             {
                 mdr = cmd.ExecuteReader();
 
-                //dt.Columns.Add("Name", typeof(string));
-                //while (mdr.Read())
-                //{
-
-                //    dt.Rows.Add(mdr[0].ToString() + " , " + mdr[1].ToString());
-                //}
-
                 dt.Columns.Clear();
                 dt.Columns.Add("SchedID");
                 dt.Columns.Add("SubjectCode");
@@ -48,8 +41,6 @@ namespace EonBotzLibrary
 
                 while (mdr.Read())
                 {
-
-
                     string foo = mdr[3].ToString(), bar = string.Empty;
 
                     foreach (char c in foo)
@@ -79,7 +70,7 @@ namespace EonBotzLibrary
                             bar += "S";
                         }
                     }
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), bar.ToString(), mdr[4].ToString(), mdr[5].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(),  bar.ToString(), mdr[4].ToString(), mdr[5].ToString());
                 }
             }
         }
