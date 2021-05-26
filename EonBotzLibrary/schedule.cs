@@ -96,7 +96,7 @@ namespace EonBotzLibrary
 
             datafillcourse.Clear();
 
-            using (cmd = new MySqlCommand("SELECT description FROM course", conn))
+            using (cmd = new MySqlCommand("SELECT courseCode FROM course", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -148,7 +148,7 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            using (cmd = new MySqlCommand("INSERT INTO schedule(subjectCode,roomid,date,timestart,timeend,status,maxStudent,courseID)VALUES(" +
+            using (cmd = new MySqlCommand("INSERT INTO schedule(subjectCode,roomid,date,timestart,timeend,status,maxStudent, courseCode)VALUES(" +
                 "@subjcode,@roomid,@date,@timestart,@timeend,@status,@maxStudent,@course)", conn))
             {
                 cmd.Parameters.AddWithValue("@subjcode", subjcode);
@@ -209,13 +209,10 @@ namespace EonBotzLibrary
                 {
                     string foo = mdr[4].ToString(), bar = string.Empty;
                     string roomID = mdr[2].ToString();
-                    string courseID = mdr[3].ToString();
 
 
                     var roomDesc = DBContext.GetContext().Query("rooms").Where("roomId", roomID).First();
-                    var value = DBContext.GetContext().Query("course").Where("courseId", courseID).First();
-
-
+                   
 
                     foreach (char c in foo)
                     {
@@ -245,7 +242,7 @@ namespace EonBotzLibrary
                         }
                     }
 
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), roomDesc.description, value.description, bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), roomDesc.description, mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString());
                 }
             }
         }

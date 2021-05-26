@@ -58,6 +58,12 @@ namespace EonBotzLibrary
         //
 
         //Confirmation Function
+
+        public static bool AddPreview()
+        {
+            DialogResult dr = MessageBox.Show("Do you want to preview ?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return dr == DialogResult.Yes ? true : false;
+        }
         public static bool AddConfirmation()
         {
             DialogResult dr = MessageBox.Show("Do you want to Add ?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
