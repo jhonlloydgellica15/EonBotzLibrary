@@ -24,9 +24,6 @@ namespace EonBotzLibrary
 
           
         }
-
-
-
         //Check if combobox is empty
         public static bool isEmptyCmb(ComboBox[] values)
         {
