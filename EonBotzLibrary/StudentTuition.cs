@@ -26,14 +26,15 @@ namespace EonBotzLibrary
       
         public void viewSubj()
         {
+            dt.Clear();
             conn = connect.getcon();
             conn.Open();
 
-            dt.Clear();
+
             using (cmd = new MySqlCommand("select a.subjectcode, SUM(a.totalprice) from subjects a , schedule b where b.subjectcode = a.subjectCode and b.schedid ='"+indsub+"'", conn))
             {
                 mdr = cmd.ExecuteReader();
-
+        
                 dt.Columns.Clear();
         
                 dt.Columns.Add("SubjectCode");
