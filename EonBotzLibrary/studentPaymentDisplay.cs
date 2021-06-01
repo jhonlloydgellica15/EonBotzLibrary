@@ -36,7 +36,7 @@ namespace EonBotzLibrary
 
         public void display()
         {
-
+            //display
             conn = connect.getcon();
             conn.Open();
 
