@@ -148,14 +148,14 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            using (cmd = new MySqlCommand("INSERT INTO schedule(subjectCode,roomid,date,timestart,timeend,status,maxStudent, courseCode)VALUES(" +
-                "@subjcode,@roomid,@date,@timestart,@timeend,@status,@maxStudent,@course)", conn))
+            using (cmd = new MySqlCommand("INSERT INTO schedule(subjectCode,subjectTitle,roomid,date,timestart,timeend,status,maxStudent, courseCode)VALUES(" +
+                "@subjcode,@subjectTitle,@roomid,@date,@timestart,@timeend,@status,@maxStudent,@course)", conn))
             {
                 cmd.Parameters.AddWithValue("@subjcode", subjcode);
+                cmd.Parameters.AddWithValue("@subjectTitle", subjTitle);
                 cmd.Parameters.AddWithValue("@roomid", roomid);
                 cmd.Parameters.AddWithValue("@course", course);
                 cmd.Parameters.AddWithValue("@date", date);
-
                 cmd.Parameters.AddWithValue("@timestart", timeStart);
                 cmd.Parameters.AddWithValue("@timeend", timeEnd);
                 cmd.Parameters.AddWithValue("@status", status);
@@ -196,7 +196,8 @@ namespace EonBotzLibrary
                 dt.Columns.Clear();
 
                 dt.Columns.Add("SchedID");
-                dt.Columns.Add("SubjectCode");
+                dt.Columns.Add("SubjectCode"); 
+                dt.Columns.Add("SubjTitle");
                 dt.Columns.Add("RoomID");
                 dt.Columns.Add("CourseID");
                 dt.Columns.Add("date");
@@ -207,8 +208,8 @@ namespace EonBotzLibrary
 
                 while (mdr.Read())
                 {
-                    string foo = mdr[4].ToString(), bar = string.Empty;
-                    string roomID = mdr[2].ToString();
+                    string foo = mdr[5].ToString(), bar = string.Empty;
+                    string roomID = mdr[3].ToString();
 
 
                     var roomDesc = DBContext.GetContext().Query("rooms").Where("roomId", roomID).First();
@@ -242,7 +243,7 @@ namespace EonBotzLibrary
                         }
                     }
 
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), roomDesc.description, mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), roomDesc.description, mdr[4].ToString(), bar, mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString());
                 }
             }
         }

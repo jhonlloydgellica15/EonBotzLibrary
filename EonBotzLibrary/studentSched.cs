@@ -10,14 +10,17 @@ namespace EonBotzLibrary
     
     public class studentSched
     {
-       
+       string total;
         Connection connect = new Connection();
         MySqlConnection conn;
         MySqlDataReader mdr;
         MySqlCommand cmd;
       public   DataTable dt = new DataTable();
+        public List<string> datafill = new List<string>();
 
         public string category { set; get; }
+
+        public string totalUnits { set; get; }
 
 
         public void display()
@@ -26,10 +29,10 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select b.schedid,b.subjectcode, c.subjectTitle,d.description,b.date, b.timestart,b.timeend,b.maxstudent,b.status, c.lab,c.lec  from tuition a,schedule b, subjects c,rooms d   where b.subjectcode = c.subjectcode and a.schedid = b.schedid and a.tuitioncatid= '" + category + "' group by a.tuitionid", conn))
+            using (cmd = new MySqlCommand("select b.schedid,b.subjectcode, c.subjectTitle,d.description,b.date, b.timestart,b.timeend,b.maxstudent,b.status, c.lab,c.lec, c.totalUnits  from tuition a,schedule b, subjects c,rooms d   where b.subjectcode = c.subjectcode and a.schedid = b.schedid and a.tuitioncatid= '" + category + "' group by a.tuitionid", conn))
             {
                 mdr = cmd.ExecuteReader();
-
+                        
                 dt.Columns.Clear();
 
                 dt.Columns.Add("SchedID");
@@ -42,9 +45,13 @@ namespace EonBotzLibrary
                 dt.Columns.Add("MaxStudent");
                 dt.Columns.Add("Status");
                 dt.Columns.Add("lablec");
+                dt.Columns.Add("total");
+
 
                 while (mdr.Read())
                 {
+                    //totalUnits = mdr[11].ToString();
+                   totalUnits = mdr[11].ToString();
                     string foo = mdr[4].ToString(), bar = string.Empty;
 
                     foreach (char c in foo)
@@ -74,7 +81,8 @@ namespace EonBotzLibrary
                             bar += "S";
                         }
                     }
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[10].ToString() + "/" + mdr[9].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[10].ToString() + "/" + mdr[9].ToString(), mdr[11].ToString());
+                    
                 }
             }
         }
