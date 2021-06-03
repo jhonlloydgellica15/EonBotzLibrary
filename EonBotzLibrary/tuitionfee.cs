@@ -27,7 +27,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT distinct a.tuitionCatID, a.category,(select count(c.subjectcode) from tuition b, subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select sum(c.totallecprice) from tuition b, subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totallabprice) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totalunits) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode),(select    sum(c.totalprice) from tuition b,subjects c   where a.tuitioncatID = b.tuitioncatID  and b.subjectcode = c.subjectcode)from tuitioncategory a ,tuition b, subjects c group by a.tuitioncatid,b.tuitioncatid,c.subjectcode", conn))
+            using (cmd = new MySqlCommand("select  a.tuitioncatid,a.category,count(b.schedid),sum(c.lecprice),sum(c.labprice),sum(c.totalunits), sum(c.totalPrice) from tuitioncategory a left join  tuition b on a.tuitioncatid = b.tuitioncatid left join subjects c on c.subjectcode = b.subjectcode group by a.tuitioncatid", conn))
             {
                 mdr = cmd.ExecuteReader();
 

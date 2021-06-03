@@ -9,7 +9,7 @@ namespace EonBotzLibrary
     {
         public string structurename { set; get; }
         public string structureID { set; get; }
-        public string structuredescrip { set; get; }    
+        public string structuredescrip { set; get; }
         public string total { set; get; }
         public string categoryID { set; get; }
         public string getcatid { set; get; }
@@ -29,7 +29,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT distinct a.structureID,a.structureName,a.description,count( c.categoryid )as count, sum( c.total)as total FROM smsdb.feestructure a,smsdb.categoryfee b, smsdb.totalfee c  where  a.structureID = c.structureID  group by  c.structureID,a.structureID,b.categoryid", conn))
+            using (cmd = new MySqlCommand("select  a.*, count(b.categoryid),sum(b.total) from feestructure a left join totalfee b on a.structureid = b.structureid group by a.structureid", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -51,12 +51,12 @@ namespace EonBotzLibrary
         {
             conn = connect.getcon();
             conn.Open();
-            cmd = new MySqlCommand("select distinct a.categoryid from totalfee a, categoryfee b  where b.category = '" + getcat + "' and a.categoryid = b.categoryid  ",conn);
+            cmd = new MySqlCommand("select distinct a.categoryid from totalfee a, categoryfee b  where b.category = '" + getcat + "' and a.categoryid = b.categoryid  ", conn);
             mdr = cmd.ExecuteReader();
-            while(mdr.Read())
+            while (mdr.Read())
             {
                 getcatid = mdr[0].ToString();
-            }    
+            }
 
         }
 
@@ -108,7 +108,7 @@ namespace EonBotzLibrary
 
                     conn = connect.getcon();
                     conn.Open();
-                    cmd = new MySqlCommand("select sum(b.total),count(b.total) from categoryfee a, totalfee b where b.structureid ='"+structureID+"' and a.categoryid = b.categoryid", conn);
+                    cmd = new MySqlCommand("select sum(b.total),count(b.total) from categoryfee a, totalfee b where b.structureid ='" + structureID + "' and a.categoryid = b.categoryid", conn);
                     mdr = cmd.ExecuteReader();
                     while (mdr.Read())
                     {
@@ -116,9 +116,6 @@ namespace EonBotzLibrary
                     }
                 }
             }
-
-
-
         }
 
         public void viewcategories()
@@ -153,7 +150,7 @@ namespace EonBotzLibrary
 
             cmd = new MySqlCommand("select categoryid from categoryfee where category ='" + category + "'", conn);
             mdr = cmd.ExecuteReader();
-            while(mdr.Read())
+            while (mdr.Read())
             {
                 categoryID = mdr[0].ToString();
             }
@@ -169,10 +166,8 @@ namespace EonBotzLibrary
                 cmd.Parameters.AddWithValue("@structureid", structureID);
                 cmd.Parameters.AddWithValue("@categoryid", categoryID);
                 cmd.Parameters.AddWithValue("@total", amount);
-     
-                cmd.ExecuteNonQuery();
-                
 
+                cmd.ExecuteNonQuery();
             }
             conn.Close();
         }
