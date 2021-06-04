@@ -29,7 +29,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select b.schedid,b.subjectcode, c.subjectTitle,d.description,b.date, b.timestart,b.timeend,b.maxstudent,b.status, c.lab,c.lec, c.totalUnits  from tuition a,schedule b, subjects c,rooms d   where b.subjectcode = c.subjectcode and a.schedid = b.schedid and a.tuitioncatid= '" + category + "' group by a.tuitionid", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.description,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,tuition c where a.roomId = d.roomId and a.subjectcode = b.subjectcode and a.schedid = c.schedID and c.tuitionCatID = '" + category + "' group by c.tuitionID", conn))
             {
                 mdr = cmd.ExecuteReader();
                         
@@ -52,7 +52,7 @@ namespace EonBotzLibrary
                 {
                     //totalUnits = mdr[11].ToString();
                    totalUnits = mdr[11].ToString();
-                    string foo = mdr[4].ToString(), bar = string.Empty;
+                   string foo = mdr[4].ToString(), bar = string.Empty;
 
                     foreach (char c in foo)
                     {

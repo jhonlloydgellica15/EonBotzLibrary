@@ -9,11 +9,15 @@ namespace EonBotzLibrary
     public static class Validator
     {
 
-
-
-
-
+       
+        //Validate accept numbers only
+        public static void ValidateKeypressNumber(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar)) 
+                e.Handled = true;
+        }
         //Disable all textbox
+
 
         public static void disableTextbox(TextBox[] values)
         {
