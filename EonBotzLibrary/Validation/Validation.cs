@@ -8,8 +8,6 @@ namespace EonBotzLibrary
 {
     public static class Validator
     {
-
-       
         //Validate accept numbers only
         public static void ValidateKeypressNumber(object sender, KeyPressEventArgs e)
         {
@@ -17,8 +15,6 @@ namespace EonBotzLibrary
                 e.Handled = true;
         }
         //Disable all textbox
-
-
         public static void disableTextbox(TextBox[] values)
         {
             foreach(var value in values)
@@ -41,9 +37,7 @@ namespace EonBotzLibrary
             }
             return true;
         }
-
         //Check if textbox is empty function
-
         public static bool isEmpty(TextBox[] values)
         {
             foreach (var value in values)
@@ -56,10 +50,7 @@ namespace EonBotzLibrary
             }
             return true;
         }
-        //
-
         //Confirmation Function
-
         public static bool AddPreview()
         {
             DialogResult dr = MessageBox.Show("Do you want to preview ?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

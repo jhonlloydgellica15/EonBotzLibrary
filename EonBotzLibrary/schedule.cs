@@ -36,7 +36,6 @@ namespace EonBotzLibrary
 
         public DataTable dt = new DataTable();
 
-
         private DataSet ds = new DataSet();
         public void times()
         {
@@ -96,7 +95,7 @@ namespace EonBotzLibrary
 
             datafillcourse.Clear();
 
-            using (cmd = new MySqlCommand("SELECT courseCode FROM course", conn))
+            using (cmd = new MySqlCommand("SELECT coursecode FROM coursecode", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -128,7 +127,7 @@ namespace EonBotzLibrary
 
             conn = connect.getcon();
             conn.Open();
-            cmd = new MySqlCommand("select courseID from course where description = '" + course + "'", conn);
+            cmd = new MySqlCommand("select courseID from coursecode where courseId = '" + course + "'", conn);
             mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
