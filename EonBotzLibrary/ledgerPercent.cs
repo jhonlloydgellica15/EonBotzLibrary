@@ -20,6 +20,7 @@ namespace EonBotzLibrary
         public string finals { set; get; }
         public string selectstudentid { set; get; }
         public string selectStudentSchedid { set; get; }
+        public string downpayment { set; get; }
 
 
         public void percent()
@@ -27,7 +28,7 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            cmd = new MySqlCommand("select prelim,midterm,semiFinals,finals from percentage where status ='Deactivate' ", conn);
+            cmd = new MySqlCommand("select prelim,midterm,semiFinals,finals,downpayment from percentage where status ='Deactivate' ", conn);
             mdr = cmd.ExecuteReader();
             while(mdr.Read())
             {
@@ -35,6 +36,7 @@ namespace EonBotzLibrary
                 midterm = mdr[1].ToString();
                 semi = mdr[2].ToString();
                 finals = mdr[3].ToString();
+                downpayment = mdr[4].ToString();
             }
             }
         public void selectSchedID()
