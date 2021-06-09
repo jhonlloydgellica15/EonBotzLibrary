@@ -210,9 +210,7 @@ namespace EonBotzLibrary
                     string foo = mdr[5].ToString(), bar = string.Empty;
                     string roomID = mdr[3].ToString();
 
-
                     var roomDesc = DBContext.GetContext().Query("rooms").Where("roomId", roomID).First();
-                   
 
                     foreach (char c in foo)
                     {

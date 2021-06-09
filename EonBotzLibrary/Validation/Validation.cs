@@ -50,6 +50,21 @@ namespace EonBotzLibrary
             }
             return true;
         }
+
+        //Confirmation for activation and deactivation of academic year
+        public static bool deactYear()
+        {
+            DialogResult dr = MessageBox.Show("Do you want to deactivate ?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return dr == DialogResult.Yes ? true : false;
+        }
+
+        public static bool actYear()
+        {
+            DialogResult dr = MessageBox.Show("Do you want to activate ?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return dr == DialogResult.Yes ? true : false;
+        }
+        //
+
         //Confirmation Function
         public static bool AddPreview()
         {
@@ -71,7 +86,7 @@ namespace EonBotzLibrary
 
         public static bool DeleteConfirmation()
         {
-            DialogResult dr = MessageBox.Show("Do you want to Delete ?", "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dr = MessageBox.Show("Do you want to delete ?", "Delete Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             return dr == DialogResult.Yes ? true : false;
         }
         //
