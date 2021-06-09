@@ -134,17 +134,23 @@ namespace EonBotzLibrary
         }
         public void viewPaymentDetailed()
         {
-            conn = connect.getcon();
-            conn.Open();
+             conn = connect.getcon();
+                conn.Open();
 
-            dt.Clear();
-            cmd = new MySqlCommand("select a.downpayment,sum(d.amount)+a.downpayment  from studentActivation a  left join studentSched b on b.studentid = a.studentID left join Billing c on b.studentSchedid = c.studentSchedid and a.studentID = b.studentID and billingID =61 left join payment d on d.billingID = c.billingID", conn);
-            mdr = cmd.ExecuteReader();
-            while(mdr.Read())
+                dt.Clear();
+                cmd = new MySqlCommand("select a.downpayment,sum(d.amount)+a.downpayment  from studentActivation a  left join studentSched b on b.studentid = a.studentID left join Billing c on b.studentSchedid = c.studentSchedid and a.studentID = b.studentID and billingID =61 left join payment d on d.billingID = c.billingID", conn);
+                mdr = cmd.ExecuteReader();
+                while (mdr.Read())
             {
-              totalpaid =Convert.ToDouble(mdr[1].ToString());
-              
-            }
+                try
+                {
+                    totalpaid = Convert.ToDouble(mdr[1].ToString());
+                }
+                catch (Exception) { totalpaid = Convert.ToDouble(mdr[0].ToString()); }
+
+                }
+            
+     
 
             conn = connect.getcon();
             conn.Open();
