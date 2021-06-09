@@ -142,7 +142,7 @@ namespace EonBotzLibrary
             mdr = cmd.ExecuteReader();
             while(mdr.Read())
             {
-                string wew = mdr[0].ToString();
+              totalpaid =Convert.ToDouble(mdr[1].ToString());
               
             }
 
