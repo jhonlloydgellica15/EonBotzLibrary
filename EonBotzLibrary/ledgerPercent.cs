@@ -21,6 +21,7 @@ namespace EonBotzLibrary
         public string selectstudentid { set; get; }
         public string selectStudentSchedid { set; get; }
         public string downpayment { set; get; }
+        public string studentDownpayment { set; get; }
 
 
         public void percent()
@@ -71,6 +72,7 @@ namespace EonBotzLibrary
             }
 
         }
+ 
 
     }
 }

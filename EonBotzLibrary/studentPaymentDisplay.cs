@@ -31,8 +31,8 @@ namespace EonBotzLibrary
         public string remarks { set; get; }
         public string paymentMethod { set; get; }
         public string status { set; get; }
-        public string totalpaid { set; get; }
-
+        public double totalpaid { set; get; }
+        public string studentdownpayment { set; get; }
 
         public void display()
         {
@@ -84,7 +84,20 @@ namespace EonBotzLibrary
 
         }
 
+        public void studentDOwn()
+        {
 
+            conn = connect.getcon();
+            conn.Open();
+
+            cmd = new MySqlCommand("select downpayment from studentActivation where studentid  = '" + studentID+"'", conn);
+            mdr = cmd.ExecuteReader();
+            while (mdr.Read())
+            {
+                studentdownpayment = mdr[0].ToString();
+            }
+
+        }
         public void insertpayment()
         {
             conn = connect.getcon();
@@ -125,18 +138,19 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            cmd = new MySqlCommand("select sum(b.amount) from Billing a, payment b where a.billingid = b.billingid  and a.billingid = '" + billingid + "'", conn);
+            cmd = new MySqlCommand("select a.downpayment,sum(d.amount)+a.downpayment  from studentActivation a  left join studentSched b on b.studentid = a.studentID left join Billing c on b.studentSchedid = c.studentSchedid and a.studentID = b.studentID and billingID =61 left join payment d on d.billingID = c.billingID", conn);
             mdr = cmd.ExecuteReader();
             while(mdr.Read())
             {
-                totalpaid = mdr[0].ToString();
+                string wew = mdr[0].ToString();
+              
             }
 
             conn = connect.getcon();
             conn.Open();
 
             dt.Clear();
-            cmd = new MySqlCommand("select  a.total  -sum(b.amount)  from Billing a, payment b where a.billingid = b.billingid  and a.billingid ='" + billingid + "'", conn);
+            cmd = new MySqlCommand("select  a.total  -sum(b.amount)-c.downpayment  from Billing a, payment b,studentActivation c,studentSched d where a.billingid = b.billingid  and a.billingid ='"+billingid+"' and d.studentSchedid= a.studentSchedid and d.studentID = c.studentID", conn);
             mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
