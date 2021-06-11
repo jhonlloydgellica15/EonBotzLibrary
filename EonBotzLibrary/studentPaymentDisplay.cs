@@ -33,6 +33,8 @@ namespace EonBotzLibrary
         public string status { set; get; }
         public double totalpaid { set; get; }
         public string studentdownpayment { set; get; }
+        public string dateForDown { set; get; }
+        public string remarksFordown { set; get; }
 
         public void display()
         {
@@ -90,11 +92,13 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            cmd = new MySqlCommand("select downpayment from studentActivation where studentid  = '" + studentID+"'", conn);
+            cmd = new MySqlCommand("select downpayment,note from studentActivation where studentid  = '" + studentID+"'", conn);
             mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
                 studentdownpayment = mdr[0].ToString();
+                remarksFordown = mdr[1].ToString();
+                //dateForDown = mdr[2].ToString();
             }
 
         }
@@ -138,7 +142,7 @@ namespace EonBotzLibrary
                 conn.Open();
 
                 dt.Clear();
-                cmd = new MySqlCommand("select a.downpayment,sum(d.amount)+a.downpayment  from studentActivation a  left join studentSched b on b.studentid = a.studentID left join Billing c on b.studentSchedid = c.studentSchedid and a.studentID = b.studentID and billingID =61 left join payment d on d.billingID = c.billingID", conn);
+                cmd = new MySqlCommand("select a.downpayment,sum(d.amount)+a.downpayment  from studentActivation a  left join studentSched b on a.studentid ='"+studentID+"' left join Billing c on b.studentSchedid = c.studentSchedid and a.studentID = b.studentID and billingID ='"+billingid+"' left join payment d on d.billingID = c.billingID", conn);
                 mdr = cmd.ExecuteReader();
                 while (mdr.Read())
             {
