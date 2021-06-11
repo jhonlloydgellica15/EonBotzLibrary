@@ -41,7 +41,8 @@ namespace EonBotzLibrary
         {
             conn = connect.getcon();
             conn.Open();
-            cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart between '"+timeStart+"'and'"+timeEnd+"'", conn);
+            //cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart between '"+timeStart+"'and'"+timeEnd+"'", conn);
+            cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart < '" + timeEnd + "' and timeEnd > '" + timeStart + "'", conn);
             {
                 mdr = cmd.ExecuteReader();
 
@@ -79,7 +80,7 @@ namespace EonBotzLibrary
 
             datafillroom.Clear();
 
-            using (cmd = new MySqlCommand("SELECT description FROM rooms", conn))
+            using (cmd = new MySqlCommand("SELECT name FROM rooms", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -114,7 +115,7 @@ namespace EonBotzLibrary
 
             conn = connect.getcon();
             conn.Open();
-            cmd = new MySqlCommand("select roomID from rooms where description = '" + roomdesc + "'", conn);
+            cmd = new MySqlCommand("select roomID from rooms where name = '" + roomdesc + "'", conn);
             mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
@@ -188,7 +189,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT * from schedule", conn))
+            using (cmd = new MySqlCommand("SELECT a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status from schedule a, rooms b where a.roomId = b.roomId", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -201,16 +202,13 @@ namespace EonBotzLibrary
                 dt.Columns.Add("CourseID");
                 dt.Columns.Add("date");
                 dt.Columns.Add("maxStudent");
-                dt.Columns.Add("status");
                 dt.Columns.Add("time start");
                 dt.Columns.Add("time end");
+                dt.Columns.Add("status");
 
                 while (mdr.Read())
                 {
                     string foo = mdr[5].ToString(), bar = string.Empty;
-                    string roomID = mdr[3].ToString();
-
-                    var roomDesc = DBContext.GetContext().Query("rooms").Where("roomId", roomID).First();
 
                     foreach (char c in foo)
                     {
@@ -240,7 +238,7 @@ namespace EonBotzLibrary
                         }
                     }
 
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), roomDesc.description, mdr[4].ToString(), bar, mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), bar, mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString());
                 }
             }
         }
