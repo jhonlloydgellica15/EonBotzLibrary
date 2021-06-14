@@ -93,17 +93,18 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT c.schedID , a.subjectcode FROM smsdb.tuition a, subjects b, schedule c where a.subjectCode = b.subjectcode and a.schedID = c.schedID and tuitionCatID = '" + id + "'", conn))
+            using (cmd = new MySqlCommand("SELECT c.schedID , a.subjectcode, a.subjTitle FROM smsdb.tuition a, subjects b, schedule c where a.subjectCode = b.subjectcode and a.schedID = c.schedID and tuitionCatID = '" + id + "'", conn))
             {
                 mdr = cmd.ExecuteReader();
 
                 dt.Columns.Clear();
                 dt.Columns.Add("schedID");
                 dt.Columns.Add("subjectcode");
+                dt.Columns.Add("subjTitle");
 
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString());
 
                 }
             }

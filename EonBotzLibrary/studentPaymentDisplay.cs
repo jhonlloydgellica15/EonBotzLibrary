@@ -70,7 +70,6 @@ namespace EonBotzLibrary
             using (cmd = new MySqlCommand("select a.prelim,midterm,semi,finals,total,billingid from Billing a,studentSched b,student c where  a.studentSchedid = b.studentSchedID and b.studentid = c.studentid and c.studentid ='"+studentID+"'", conn))
             {
                 mdr = cmd.ExecuteReader();
-           
 
                 while (mdr.Read())
                 {

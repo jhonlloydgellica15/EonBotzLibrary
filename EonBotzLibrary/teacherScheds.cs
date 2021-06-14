@@ -98,6 +98,65 @@ namespace EonBotzLibrary
                 }
             }
         }
+
+        public void viewSchedTeach()
+        {
+            conn = connect.getcon();
+            conn.Open();
+
+            dt.Clear();
+
+            using(cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, d.firstname, d.lastname, d.gender from schedule a, teachersched b, rooms c, teachers d WHERE b.teacherId = d.teacherId and a.roomId = c.roomId and b.teacherid = '"+ teacherID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
+            {
+                mdr = cmd.ExecuteReader();
+
+                dt.Columns.Clear();
+                dt.Columns.Add("schedID");
+                dt.Columns.Add("subjCode");
+                dt.Columns.Add("subjTitle");
+                dt.Columns.Add("roomName");
+                dt.Columns.Add("day");
+                dt.Columns.Add("timestart");
+                dt.Columns.Add("timeend");
+                dt.Columns.Add("fName");
+                dt.Columns.Add("gender");
+
+                while (mdr.Read())
+                {
+                    string foo = mdr[4].ToString(), bar = string.Empty;
+
+                    foreach (char c in foo)
+                    {
+                        if (c == '1')
+                        {
+                            bar += "M";
+                        }
+                        else if (c == '2')
+                        {
+                            bar += "T";
+                        }
+                        else if (c == '3')
+                        {
+                            bar += "W";
+                        }
+                        else if (c == '4')
+                        {
+                            bar += "Th";
+                        }
+                        else if (c == '5')
+                        {
+                            bar += "F";
+                        }
+                        else if (c == '6')
+                        {
+                            bar += "S";
+                        }
+                    }
+
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar.ToString(), mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString() + mdr[8].ToString(), mdr[9].ToString());
+                }
+            }
+        }
     }
 
 }
