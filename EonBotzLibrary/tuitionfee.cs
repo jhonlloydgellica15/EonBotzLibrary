@@ -27,7 +27,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select  a.tuitioncatid,a.category,count(b.schedid),sum(c.lecprice),sum(c.labprice),sum(c.totalunits), sum(c.totalPrice) from tuitioncategory a left join  tuition b on a.tuitioncatid = b.tuitioncatid left join subjects c on c.subjectcode = b.subjectcode group by a.tuitioncatid", conn))
+            using (cmd = new MySqlCommand("select  a.tuitioncatid,a.category,count(b.tuitioncatid),sum(c.lecprice),sum(c.labprice),sum(c.totalunits), sum(c.totalPrice) from tuitioncategory a left join  tuition b on a.tuitioncatid = b.tuitioncatid left join subjects c on c.subjectCode = b.subjectcode group by a.tuitioncatid", conn)) ;
             {
                 mdr = cmd.ExecuteReader();
 
@@ -93,42 +93,45 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT c.schedID , a.subjectcode, a.subjTitle FROM smsdb.tuition a, subjects b, schedule c where a.subjectCode = b.subjectcode and a.schedID = c.schedID and tuitionCatID = '" + id + "'", conn))
+            using (cmd = new MySqlCommand("select a.subjectcode, subjectTitle, lec, lab, labprice, lecprice, totalprice from subjects a, tuition b where a.subjectcode = b.subjectcode and b.tuitioncatid = '" + id + "'", conn)) ;
             {
                 mdr = cmd.ExecuteReader();
 
                 dt.Columns.Clear();
-                dt.Columns.Add("schedID");
                 dt.Columns.Add("subjectcode");
-                dt.Columns.Add("subjTitle");
+                dt.Columns.Add("title");
+                dt.Columns.Add("leclab");
+                dt.Columns.Add("labprice");
+                dt.Columns.Add("lecprice");
+                dt.Columns.Add("totalprice");
 
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString() +"/"+mdr[3].ToString(),mdr[4].ToString(),mdr[5].ToString(),mdr[6].ToString());
 
                 }
             }
 
         }
 
-        //public void selectQuery2()
-        //{
-        //    conn = connect.getcon();
-        //    conn.Open();
+        public void selectQuery2()
+        {
+            conn = connect.getcon();
+            conn.Open();
 
-        //    dt.Clear();
-        //    using (cmd = new MySqlCommand("SELECT sum(b.totalprice) FROM smsdb.tuition a, subjects b where a.subjectCode = b.subjectcode and tuitionCatID = '" + id + "'", conn))
-        //    {
-        //        mdr = cmd.ExecuteReader();
+            dt.Clear();
+            using (cmd = new MySqlCommand("SELECT sum(b.totalprice) FROM smsdb.tuition a, subjects b where a.subjectCode = b.subjectcode and tuitionCatID = '" + id + "'", conn))
+            {
+                mdr = cmd.ExecuteReader();
 
-        //        while (mdr.Read())
-        //        {
-        //            //dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
-        //            total = mdr[0].ToString();
-        //        }
-        //    }
+                while (mdr.Read())
+                {
+                    //dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
+                    total = mdr[0].ToString();
+                }
+            }
 
-        //}
+        }
 
 
 
