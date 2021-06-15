@@ -82,17 +82,19 @@ namespace EonBotzLibrary
                 //}
 
                 dt.Columns.Clear();
-                dt.Columns.Add("ID");
+     
                 dt.Columns.Add("SubjectCode");
                 dt.Columns.Add("SubjectTitle");
                 dt.Columns.Add("Lec");
                 dt.Columns.Add("Lab");
-                dt.Columns.Add("TotalUnits");
-                dt.Columns.Add("PreReq");
+                dt.Columns.Add("LecPrice");
+                dt.Columns.Add("LabPrice");
+                dt.Columns.Add("Total");
+                dt.Columns.Add("CourseID");
 
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString());
+                    dt.Rows.Add( mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString()+"/"+ mdr[4].ToString(), mdr[6].ToString(), mdr[7].ToString(),mdr[10].ToString(),mdr[13].ToString());
                 }
             }
         }
