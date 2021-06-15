@@ -27,7 +27,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode,b.description,a.date, a.timestart,a.timeend from schedule a ,rooms b where b.roomid = a.roomid  and schedid = '" + subjectcode + "'", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.sub ,b.description,a.date, a.timestart,a.timeend from schedule a ,rooms b where b.roomid = a.roomid  and schedid = '" + subjectcode + "'", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -90,11 +90,10 @@ namespace EonBotzLibrary
                 dt.Columns.Add("Name");
                 dt.Columns.Add("Course");
 
-
                 while (mdr.Read())
                 {
-                    var value = DBContext.GetContext().Query("course").Where("courseId", mdr[4].ToString()).First();
-                    dt.Rows.Add(mdr[0].ToString(), $"{mdr[1].ToString()} {mdr[2].ToString()} {mdr[3].ToString()}", value.abbreviation);
+                    
+                    dt.Rows.Add(mdr[0].ToString(), $"{mdr[1].ToString()} {mdr[2].ToString()} {mdr[3].ToString()}", mdr[4].ToString());
                 }
             }
         }
