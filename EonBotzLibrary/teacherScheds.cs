@@ -27,13 +27,14 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.sub ,b.description,a.date, a.timestart,a.timeend from schedule a ,rooms b where b.roomid = a.roomid  and schedid = '" + subjectcode + "'", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle ,b.name,a.date, a.timestart,a.timeend from schedule a ,rooms b where b.roomid = a.roomid  and schedid = '" + subjectcode + "'", conn))
             {
                 mdr = cmd.ExecuteReader();
 
                 dt.Columns.Clear();
                 dt.Columns.Add("SchedID");
                 dt.Columns.Add("SubjectCode");
+                dt.Columns.Add("SubjectTitle");
                 dt.Columns.Add("Room");
                 dt.Columns.Add("Day");
                 dt.Columns.Add("TimeStart");
@@ -41,7 +42,7 @@ namespace EonBotzLibrary
 
                 while (mdr.Read())
                 {
-                    string foo = mdr[3].ToString(), bar = string.Empty;
+                    string foo = mdr[4].ToString(), bar = string.Empty;
 
                     foreach (char c in foo)
                     {
@@ -70,7 +71,7 @@ namespace EonBotzLibrary
                             bar += "S";
                         }
                     }
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(),  bar.ToString(), mdr[4].ToString(), mdr[5].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString() , bar.ToString(), mdr[5].ToString(), mdr[6].ToString());
                 }
             }
         }
