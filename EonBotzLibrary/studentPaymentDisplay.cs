@@ -17,7 +17,7 @@ namespace EonBotzLibrary
         MySqlDataReader mdr;
         MySqlCommand cmd;
         public DataTable dt = new DataTable();
-        
+        public string paymentid { set; get; }
         public string studentID { set; get; }
         public string prelim { set; get; }
 
@@ -118,20 +118,21 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            cmd = new MySqlCommand("select b.amount,b.remarks,b.date  from Billing a, payment b where a.billingid = b.billingid and a.billingid ='"+billingid+"'", conn);
+            cmd = new MySqlCommand("select b.paymentid, b.amount,b.remarks,b.date  from Billing a, payment b where a.billingid = b.billingid and b.status ='paid' and a.billingid ='"+billingid+"'", conn);
             mdr = cmd.ExecuteReader();
        
             dt.Columns.Clear();
-
+            dt.Columns.Add("paymentid");
             dt.Columns.Add("amount");
             dt.Columns.Add("remarks");
             dt.Columns.Add("date");
-
+         
 
 
             while (mdr.Read())
             {
-                dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(),mdr[2].ToString());
+         
+                dt.Rows.Add(mdr[0].ToString(),mdr[1].ToString(), mdr[2].ToString(),mdr[3].ToString()); 
             }
 
         }
@@ -141,7 +142,7 @@ namespace EonBotzLibrary
                 conn.Open();
 
                 dt.Clear();
-                cmd = new MySqlCommand("select a.downpayment,sum(d.amount)+a.downpayment  from studentActivation a  left join studentSched b on a.studentid ='"+studentID+"' left join Billing c on b.studentSchedid = c.studentSchedid and a.studentID = b.studentID and billingID ='"+billingid+"' left join payment d on d.billingID = c.billingID", conn);
+                cmd = new MySqlCommand("select a.downpayment,sum(d.amount)+a.downpayment  from studentActivation a  left join studentSched b on a.studentid ='"+studentID+"' left join Billing c on b.studentSchedid = c.studentSchedid and a.studentID = b.studentID and billingID ='"+billingid+"' left join payment d on d.billingID = c.billingID and d.status ='paid'", conn);
                 mdr = cmd.ExecuteReader();
                 while (mdr.Read())
             {
@@ -159,7 +160,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            cmd = new MySqlCommand("select  a.total  -sum(b.amount)-c.downpayment  from Billing a, payment b,studentActivation c,studentSched d where a.billingid = b.billingid  and a.billingid ='"+billingid+"' and d.studentSchedid= a.studentSchedid and d.studentID = c.studentID", conn);
+            cmd = new MySqlCommand("select  a.total  -sum(b.amount)-c.downpayment  from Billing a, payment b,studentActivation c,studentSched d where a.billingid = b.billingid and b.status ='' and a.billingid ='"+billingid+"' and d.studentSchedid= a.studentSchedid and d.studentID = c.studentID", conn);
             mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
