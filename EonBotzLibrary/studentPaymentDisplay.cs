@@ -66,7 +66,7 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            dt.Clear();
+        
             using (cmd = new MySqlCommand("select a.prelim,midterm,semi,finals,total,billingid from Billing a,studentSched b,student c where  a.studentSchedid = b.studentSchedID and b.studentid = c.studentid and c.studentid ='"+studentID+"'", conn))
             {
                 mdr = cmd.ExecuteReader();
@@ -91,13 +91,22 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            cmd = new MySqlCommand("select downpayment,note from studentActivation where studentid  = '" + studentID+"'", conn);
+            cmd = new MySqlCommand("select downpayment,note,date from studentActivation where studentid  = '" + studentID+"'", conn);
             mdr = cmd.ExecuteReader();
+
+
+            dt.Columns.Clear();
+            dt.Columns.Add("studentdown");
+            dt.Columns.Add("fordown");
+    
             while (mdr.Read())
             {
+
                 studentdownpayment = mdr[0].ToString();
                 remarksFordown = mdr[1].ToString();
-                //dateForDown = mdr[2].ToString();
+                dateForDown = mdr[2].ToString();
+              
+           
             }
 
         }
@@ -122,12 +131,14 @@ namespace EonBotzLibrary
             mdr = cmd.ExecuteReader();
        
             dt.Columns.Clear();
-            dt.Columns.Add("paymentid");
-            dt.Columns.Add("amount");
-            dt.Columns.Add("remarks");
-            dt.Columns.Add("date");
-         
 
+
+
+            dt.Columns.Clear();
+            dt.Columns.Add("paymentid");
+            dt.Columns.Add("paymentanomount");
+            dt.Columns.Add("paymentremarks");
+            dt.Columns.Add("paymentdate");
 
             while (mdr.Read())
             {
