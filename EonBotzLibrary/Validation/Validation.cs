@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace EonBotzLibrary
 {
+
     public static class Validator
     {
         //Validate accept numbers only
@@ -21,9 +23,13 @@ namespace EonBotzLibrary
             {
                 value.Enabled = false;
             } 
-
-          
         }
+
+        public static string ToTitleCase(string title)
+        {
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower());
+        }
+
         //Check if combobox is empty
         public static bool isEmptyCmb(ComboBox[] values)
         {
