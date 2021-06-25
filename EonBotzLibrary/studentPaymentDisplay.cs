@@ -116,7 +116,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            cmd = new MySqlCommand("insert into payment(billingid,amount,remarks,paymentmethod,date,time,status) values ('" + billingid + "','" + amount + "','" + remarks + "','" + paymentMethod + "','" + DateTime.Now.ToShortDateString() + "','" + DateTime.Now.ToShortTimeString() + "','"+status+"')", conn);
+            cmd = new MySqlCommand("insert into payment(billingid,amount,remarks,paymentmethod,date,time,status) values ('" + billingid + "','" +amount + "','" + remarks + "','" + paymentMethod + "','" + DateTime.Now.ToShortDateString() + "','" + DateTime.Now.ToShortTimeString() + "','"+status+"')", conn);
             cmd.ExecuteNonQuery();
            
         }
