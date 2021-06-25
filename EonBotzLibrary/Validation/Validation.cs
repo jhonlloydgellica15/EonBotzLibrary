@@ -13,16 +13,24 @@ namespace EonBotzLibrary
         //Validate accept numbers only
         public static void ValidateKeypressNumber(object sender, KeyPressEventArgs e)
         {
-            if (!Char.IsDigit(e.KeyChar) && !Char.IsControl(e.KeyChar)) 
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+            {
                 e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf('.') > -1)
+            {
+                e.Handled = true;
+            }
         }
         //Disable all textbox
         public static void disableTextbox(TextBox[] values)
         {
-            foreach(var value in values)
+            foreach (var value in values)
             {
                 value.Enabled = false;
-            } 
+            }
         }
 
         public static string ToTitleCase(string title)
@@ -33,7 +41,7 @@ namespace EonBotzLibrary
         //Check if combobox is empty
         public static bool isEmptyCmb(ComboBox[] values)
         {
-            foreach(var value in values)
+            foreach (var value in values)
             {
                 if (value.Text.Equals(""))
                 {
@@ -55,6 +63,13 @@ namespace EonBotzLibrary
                 }
             }
             return true;
+        }
+
+        //Remove Subject Activation
+        public static bool RemoveSubject()
+        {
+            DialogResult dr = MessageBox.Show("Do you want to remove this subject?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return dr == DialogResult.Yes ? true : false;
         }
 
         //Confirmation for activation and deactivation of academic year

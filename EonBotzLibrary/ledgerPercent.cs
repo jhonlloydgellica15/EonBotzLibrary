@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 namespace EonBotzLibrary
 {
-   public class ledgerPercent
+    public class ledgerPercent
     {
         Connection connect = new Connection();
         MySqlConnection conn;
@@ -31,7 +31,7 @@ namespace EonBotzLibrary
 
             cmd = new MySqlCommand("select prelim,midterm,semiFinals,finals,downpayment from percentage where status ='Deactivate' ", conn);
             mdr = cmd.ExecuteReader();
-            while(mdr.Read())
+            while (mdr.Read())
             {
                 prelim = mdr[0].ToString();
                 midterm = mdr[1].ToString();
@@ -39,13 +39,13 @@ namespace EonBotzLibrary
                 finals = mdr[3].ToString();
                 downpayment = mdr[4].ToString();
             }
-            }
+        }
         public void selectSchedID()
         {
             conn = connect.getcon();
             conn.Open();
 
-            cmd = new MySqlCommand("select studentschedid from studentSched where studentid = '" + selectstudentid+"'", conn);
+            cmd = new MySqlCommand("select studentschedid from studentSched where studentid = '" + selectstudentid + "'", conn);
             mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
@@ -54,8 +54,8 @@ namespace EonBotzLibrary
         }
         public void insertBilling()
         {
-           
-           
+
+
         }
 
         public void percentee()
@@ -72,7 +72,7 @@ namespace EonBotzLibrary
             }
 
         }
- 
+
 
     }
 }

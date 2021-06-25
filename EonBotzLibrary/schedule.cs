@@ -32,9 +32,11 @@ namespace EonBotzLibrary
         public string course { set; get; }
         public string timeending { set; get; }
         public string timedifftuesday { set; get; }
-       
+        public string textValue { set; get; }
+
 
         public DataTable dt = new DataTable();
+        public DataTable dtFilter = new DataTable();
 
         private DataSet ds = new DataSet();
         public void times()
@@ -184,7 +186,6 @@ namespace EonBotzLibrary
         }
         public void viewsched()
         {
-
             conn = connect.getcon();
             conn.Open();
 
@@ -196,7 +197,7 @@ namespace EonBotzLibrary
                 dt.Columns.Clear();
 
                 dt.Columns.Add("SchedID");
-                dt.Columns.Add("SubjectCode"); 
+                dt.Columns.Add("SubjectCode");
                 dt.Columns.Add("SubjTitle");
                 dt.Columns.Add("RoomID");
                 dt.Columns.Add("CourseID");
@@ -239,6 +240,66 @@ namespace EonBotzLibrary
                     }
 
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), bar, mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString());
+                }
+            }
+        }
+
+        public void filterSched()
+        {
+            conn = connect.getcon();
+            conn.Open();
+
+            dtFilter.Clear();
+            using (cmd = new MySqlCommand("SELECT  a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status FROM schedule a, rooms b where a.roomID = b.roomiD and a.subjectTitle LIKE '%" + textValue + "%'  OR  a.subjectCode LIKE '%" + textValue + "%' and a.roomId = b.roomid group by a.schedid", conn))
+            {
+                mdr = cmd.ExecuteReader();
+
+                dtFilter.Columns.Clear();
+
+                dtFilter.Columns.Add("SchedID");
+                dtFilter.Columns.Add("SubjectCode");
+                dtFilter.Columns.Add("SubjTitle");
+                dtFilter.Columns.Add("RoomID");
+                dtFilter.Columns.Add("CourseID");
+                dtFilter.Columns.Add("date");
+                dtFilter.Columns.Add("maxStudent");
+                dtFilter.Columns.Add("time start");
+                dtFilter.Columns.Add("time end");
+                dtFilter.Columns.Add("status");
+
+                while (mdr.Read())
+                {
+                    string foo = mdr[5].ToString(), bar = string.Empty;
+
+                    foreach (char c in foo)
+                    {
+                        if (c == '1')
+                        {
+                            bar += "M";
+                        }
+                        else if (c == '2')
+                        {
+                            bar += "T";
+                        }
+                        else if (c == '3')
+                        {
+                            bar += "W";
+                        }
+                        else if (c == '4')
+                        {
+                            bar += "Th";
+                        }
+                        else if (c == '5')
+                        {
+                            bar += "F";
+                        }
+                        else if (c == '6')
+                        {
+                            bar += "S";
+                        }
+                    }
+
+                    dtFilter.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), bar, mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString());
                 }
             }
         }

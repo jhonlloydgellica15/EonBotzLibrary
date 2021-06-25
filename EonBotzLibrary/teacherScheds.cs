@@ -106,7 +106,7 @@ namespace EonBotzLibrary
 
             dt.Clear();
 
-            using(cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, d.firstname, d.lastname, d.gender from schedule a, teachersched b, rooms c, teachers d WHERE b.teacherId = d.teacherId and a.roomId = c.roomId and b.teacherid = '"+ teacherID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
+            using(cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, d.firstname, d.lastname, d.gender, d.department from schedule a, teachersched b, rooms c, teachers d WHERE b.teacherId = d.teacherId and a.roomId = c.roomId and b.teacherid = '"+ teacherID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -120,6 +120,7 @@ namespace EonBotzLibrary
                 dt.Columns.Add("timeend");
                 dt.Columns.Add("fName");
                 dt.Columns.Add("gender");
+                dt.Columns.Add("department");
 
                 while (mdr.Read())
                 {
@@ -153,7 +154,7 @@ namespace EonBotzLibrary
                         }
                     }
 
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar.ToString(), mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString() + mdr[8].ToString(), mdr[9].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar.ToString(), mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString() + mdr[8].ToString(), mdr[9].ToString(), mdr[10].ToString());
                 }
             }
         }
