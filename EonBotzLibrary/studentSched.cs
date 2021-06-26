@@ -28,7 +28,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and c.SectionCategoryID = '"+category+"' and a.subjectcode = b.subjectcode group by c.schedid", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and c.SectionCategoryID = '"+category+"' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid", conn))
             {
                 mdr = cmd.ExecuteReader();
                         

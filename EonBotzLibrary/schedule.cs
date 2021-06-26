@@ -44,7 +44,7 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
             //cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart between '"+timeStart+"'and'"+timeEnd+"'", conn);
-            cmd = new MySqlCommand(" select timeend from schedule where roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart < '" + timeEnd + "' and timeEnd > '" + timeStart + "'", conn);
+            cmd = new MySqlCommand(" select timeend from schedule where status = 'available' and roomid = '" + roomid + "'and date regexp '[" + date + "]' and timestart < '" + timeEnd + "' and timeEnd > '" + timeStart + "'", conn);
             {
                 mdr = cmd.ExecuteReader();
 
@@ -190,7 +190,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status from schedule a, rooms b where a.roomId = b.roomId", conn))
+            using (cmd = new MySqlCommand("SELECT a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status from schedule a, rooms b where a.roomId = b.roomId and a.status ='available'", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -250,7 +250,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dtFilter.Clear();
-            using (cmd = new MySqlCommand("SELECT  a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status FROM schedule a, rooms b where a.roomID = b.roomiD and a.subjectTitle LIKE '%" + textValue + "%'  OR  a.subjectCode LIKE '%" + textValue + "%' and a.roomId = b.roomid group by a.schedid", conn))
+            using (cmd = new MySqlCommand("SELECT  a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status FROM schedule a, rooms b where a.roomID = b.roomiD and a.subjectTitle LIKE '%" + textValue + "%'  OR  a.subjectCode LIKE '%" + textValue + "%' and a.roomId = b.roomid and a.status ='available' group by a.schedid", conn))
             {
                 mdr = cmd.ExecuteReader();
 
