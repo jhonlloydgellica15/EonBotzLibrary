@@ -17,8 +17,10 @@ namespace EonBotzLibrary
         public string category { set; get; }
         public string id { set; get; }
         public string amount { set; get; }
+        public string textvalue { set; get; }
         public List<string> datafill = new List<string>();
         public DataTable dt = new DataTable();
+        public DataTable dtFilter = new DataTable();
         Connection connect = new Connection();
         MySqlConnection conn;
         MySqlCommand cmd;
@@ -44,6 +46,31 @@ namespace EonBotzLibrary
                 while (mdr.Read())
                 {
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString());
+                }
+            }
+        }
+
+        public void filterView()
+        {
+            conn = connect.getcon();
+            conn.Open();
+
+            dtFilter.Clear();
+            using (cmd = new MySqlCommand("select  a.*, count(b.categoryid),sum(b.total) from feestructure a left join totalfee b on a.structureid = b.structureid where a.structureID LIKE '%" + textvalue + "%' group by a.structureid", conn))
+            {
+                mdr = cmd.ExecuteReader();
+
+                dtFilter.Columns.Clear();
+                dtFilter.Columns.Add("ID");
+                dtFilter.Columns.Add("structurename");
+                dtFilter.Columns.Add("Description");
+                dtFilter.Columns.Add("count");
+                dtFilter.Columns.Add("total");
+
+
+                while (mdr.Read())
+                {
+                    dtFilter.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString());
                 }
             }
         }
