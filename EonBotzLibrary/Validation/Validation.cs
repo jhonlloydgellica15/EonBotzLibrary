@@ -51,6 +51,15 @@ namespace EonBotzLibrary
             }
             return true;
         }
+
+        //Hide buttons
+        public static void hideButton(Button[] values)
+        {
+            foreach(var value in values)
+            {
+                value.Visible = false;
+            }
+        }
         //Check if textbox is empty function
         public static bool isEmpty(TextBox[] values)
         {
