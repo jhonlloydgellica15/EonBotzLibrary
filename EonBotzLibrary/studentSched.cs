@@ -178,6 +178,8 @@ namespace EonBotzLibrary
                 dtStudentSched.Columns.Add("lablec");
                 dtStudentSched.Columns.Add("total");
                 dtStudentSched.Columns.Add("Name");
+                dtStudentSched.Columns.Add("Gender");
+                dtStudentSched.Columns.Add("Course");
 
                 while (mdr.Read())
                 {
@@ -212,7 +214,7 @@ namespace EonBotzLibrary
                         }
                     }
 
-                    dtStudentSched.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString() + "/" + mdr[10].ToString(), mdr[11].ToString());
+                    dtStudentSched.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString() + "/" + mdr[10].ToString(), mdr[11].ToString(), $"{mdr[12].ToString()} {mdr[13].ToString()}", mdr[14].ToString(), mdr[15].ToString());
                 }
             }
         }
