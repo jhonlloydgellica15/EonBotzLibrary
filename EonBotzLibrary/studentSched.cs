@@ -7,20 +7,24 @@ using System.Data;
 using SqlKata.Execution;
 namespace EonBotzLibrary
 {
-    
+
     public class studentSched
     {
-       string total;
+        string total;
         Connection connect = new Connection();
         MySqlConnection conn;
         MySqlDataReader mdr;
         MySqlCommand cmd;
-      public   DataTable dt = new DataTable();
+        public DataTable dt = new DataTable();
+        public DataTable dtFilter = new DataTable();
+        public DataTable dtStudentSched = new DataTable();
         public List<string> datafill = new List<string>();
 
         public string category { set; get; }
 
         public string totalUnits { set; get; }
+        public string getSchedID { set; get; }
+        public string studentID { set; get; }
 
         public void display()
         {
@@ -28,10 +32,10 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and c.SectionCategoryID = '"+category+"' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and c.SectionCategoryID = '" + category + "' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid", conn))
             {
                 mdr = cmd.ExecuteReader();
-                        
+
                 dt.Columns.Clear();
 
                 dt.Columns.Add("SchedID");
@@ -49,8 +53,8 @@ namespace EonBotzLibrary
                 while (mdr.Read())
                 {
                     //totalUnits = mdr[11].ToString();
-                   totalUnits = mdr[11].ToString();
-                   string foo = mdr[4].ToString(), bar = string.Empty;
+                    totalUnits = mdr[11].ToString();
+                    string foo = mdr[4].ToString(), bar = string.Empty;
 
                     foreach (char c in foo)
                     {
@@ -79,7 +83,136 @@ namespace EonBotzLibrary
                             bar += "S";
                         }
                     }
-                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[10].ToString() + "/" + mdr[9].ToString(), mdr[11].ToString());
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString() + "/" + mdr[10].ToString(), mdr[11].ToString());
+                }
+            }
+        }
+
+
+        public void displayFilter()
+        {
+            conn = connect.getcon();
+            conn.Open();
+
+            dtFilter.Clear();
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid", conn))
+            {
+                mdr = cmd.ExecuteReader();
+
+                dtFilter.Columns.Clear();
+
+                dtFilter.Columns.Add("SchedID");
+                dtFilter.Columns.Add("SubjectCode");
+                dtFilter.Columns.Add("SubjectTitle");
+                dtFilter.Columns.Add("RoomName");
+                dtFilter.Columns.Add("Day");
+                dtFilter.Columns.Add("Timestart");
+                dtFilter.Columns.Add("Timeend");
+                dtFilter.Columns.Add("MaxStudent");
+                dtFilter.Columns.Add("Status");
+                dtFilter.Columns.Add("lablec");
+                dtFilter.Columns.Add("total");
+
+                while (mdr.Read())
+                {
+                    //totalUnits = mdr[11].ToString();
+                    totalUnits = mdr[11].ToString();
+                    string foo = mdr[4].ToString(), bar = string.Empty;
+
+                    foreach (char c in foo)
+                    {
+                        if (c == '1')
+                        {
+                            bar += "M";
+                        }
+                        else if (c == '2')
+                        {
+                            bar += "T";
+                        }
+                        else if (c == '3')
+                        {
+                            bar += "W";
+                        }
+                        else if (c == '4')
+                        {
+                            bar += "Th";
+                        }
+                        else if (c == '5')
+                        {
+                            bar += "F";
+                        }
+                        else if (c == '6')
+                        {
+                            bar += "S";
+                        }
+                    }
+                    dtFilter.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString() + "/" + mdr[10].ToString(), mdr[11].ToString());
+                }
+            }
+        }
+
+        public void viewSchedStudent()
+        {
+            conn = connect.getcon();
+            conn.Open();
+
+            dtStudentSched.Clear();
+
+                                           //select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b, Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid
+            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, a.maxStudent,a.status, e.lec, e.lab, e.totalunits, d.firstname, d.lastname, d.gender, d.course from schedule a, studentSched b, rooms c, student d, subjects e WHERE b.studentID = d.studentID and a.roomId = c.roomId and a.subjectCode = e.subjectcode and a.status = 'available' and b.studentID = '" + studentID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
+            {
+
+                mdr = cmd.ExecuteReader();
+
+                dtStudentSched.Columns.Clear();
+
+                dtStudentSched.Columns.Add("SchedID");
+                dtStudentSched.Columns.Add("SubjectCode");
+                dtStudentSched.Columns.Add("SubjectTitle");
+                dtStudentSched.Columns.Add("RoomName");
+                dtStudentSched.Columns.Add("Day");
+                dtStudentSched.Columns.Add("Timestart");
+                dtStudentSched.Columns.Add("Timeend");
+                dtStudentSched.Columns.Add("MaxStudent");
+                dtStudentSched.Columns.Add("Status");
+                dtStudentSched.Columns.Add("lablec");
+                dtStudentSched.Columns.Add("total");
+                dtStudentSched.Columns.Add("Name");
+
+                while (mdr.Read())
+                {
+                    totalUnits = mdr[11].ToString();
+                    string foo = mdr[4].ToString(), bar = string.Empty;
+
+                    foreach (char c in foo)
+                    {
+                        if (c == '1')
+                        {
+                            bar += "M";
+                        }
+                        else if (c == '2')
+                        {
+                            bar += "T";
+                        }
+                        else if (c == '3')
+                        {
+                            bar += "W";
+                        }
+                        else if (c == '4')
+                        {
+                            bar += "Th";
+                        }
+                        else if (c == '5')
+                        {
+                            bar += "F";
+                        }
+                        else if (c == '6')
+                        {
+                            bar += "S";
+                        }
+                    }
+
+                    dtStudentSched.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString() + "/" + mdr[10].ToString(), mdr[11].ToString());
                 }
             }
         }
