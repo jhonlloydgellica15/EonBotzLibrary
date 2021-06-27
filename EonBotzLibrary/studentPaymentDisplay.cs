@@ -58,6 +58,8 @@ namespace EonBotzLibrary
                     dt.Rows.Add(mdr[0].ToString(), $"{mdr[1].ToString()} {mdr[2].ToString()}", mdr[3].ToString());
                 
                 }
+                conn.Close();
+                conn.Dispose();
             }
         }
 
@@ -81,7 +83,8 @@ namespace EonBotzLibrary
                     billingid = mdr[5].ToString();
                 }
             }
-
+            conn.Close();
+            conn.Dispose();
 
         }
 
@@ -108,7 +111,8 @@ namespace EonBotzLibrary
               
            
             }
-
+            conn.Close();
+            conn.Dispose();
         }
         public void insertpayment()
         {
@@ -118,7 +122,8 @@ namespace EonBotzLibrary
             dt.Clear();
             cmd = new MySqlCommand("insert into payment(billingid,amount,remarks,paymentmethod,date,time,status) values ('" + billingid + "','" +amount + "','" + remarks + "','" + paymentMethod + "','" + DateTime.Now.ToShortDateString() + "','" + DateTime.Now.ToShortTimeString() + "','"+status+"')", conn);
             cmd.ExecuteNonQuery();
-           
+            conn.Close();
+            conn.Dispose();
         }
 
         public void viewtransaction()
@@ -145,7 +150,8 @@ namespace EonBotzLibrary
          
                 dt.Rows.Add(mdr[0].ToString(),mdr[1].ToString(), mdr[2].ToString(),mdr[3].ToString()); 
             }
-
+            conn.Close();
+            conn.Dispose();
         }
         public void viewPaymentDetailed()
         {
@@ -164,8 +170,9 @@ namespace EonBotzLibrary
                 catch (Exception) { totalpaid = Convert.ToDouble(mdr[0].ToString()); }
 
                 }
-            
-     
+            conn.Close();
+            conn.Dispose();
+
 
             conn = connect.getcon();
             conn.Open();
@@ -177,7 +184,8 @@ namespace EonBotzLibrary
             {
                 currentbalance = mdr[0].ToString();
             }
-
+            conn.Close();
+            conn.Dispose();
 
         }
     }   
