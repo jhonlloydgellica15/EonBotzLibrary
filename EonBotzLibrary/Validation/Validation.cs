@@ -24,6 +24,10 @@ namespace EonBotzLibrary
                 e.Handled = true;
             }
         }
+
+        //Validate 0 first
+
+       
         //Disable all textbox
         public static void disableTextbox(TextBox[] values)
         {
@@ -38,6 +42,18 @@ namespace EonBotzLibrary
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(title.ToLower());
         }
 
+        public static bool removeZero(TextBox[] values)
+        {
+            foreach (var value in values)
+            {
+                if (value.Text.StartsWith("0"))
+                {
+                    Validator.AlertDanger("Remove 0 at first");
+                    return false;
+                }
+            }
+            return true;
+        }
         //Check if combobox is empty
         public static bool isEmptyCmb(ComboBox[] values)
         {

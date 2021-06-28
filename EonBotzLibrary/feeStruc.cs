@@ -47,6 +47,8 @@ namespace EonBotzLibrary
                 {
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString());
                 }
+                mdr.Close();
+                conn.Close();
             }
         }
 
@@ -72,7 +74,10 @@ namespace EonBotzLibrary
                 {
                     dtFilter.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString());
                 }
+                mdr.Close();
+                conn.Close();
             }
+
         }
         public void getid()
         {
@@ -84,6 +89,8 @@ namespace EonBotzLibrary
             {
                 getcatid = mdr[0].ToString();
             }
+            mdr.Close();
+            conn.Close();
 
         }
 
@@ -111,6 +118,8 @@ namespace EonBotzLibrary
                 {
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString());
                 }
+                mdr.Close();
+                conn.Close();
             }
         }
         public void viewfees()
@@ -141,6 +150,8 @@ namespace EonBotzLibrary
                     {
                         total = mdr[0].ToString();
                     }
+                    mdr.Close();
+                    conn.Close();
                 }
             }
         }
@@ -167,6 +178,8 @@ namespace EonBotzLibrary
                 {
                     datafill.Add(mdr[0].ToString());
                 }
+                mdr.Close();
+                conn.Close();
             }
 
         }
@@ -181,6 +194,8 @@ namespace EonBotzLibrary
             {
                 categoryID = mdr[0].ToString();
             }
+            mdr.Close();
+            conn.Close();
         }
         public void insertfee()
         {
@@ -196,6 +211,7 @@ namespace EonBotzLibrary
 
                 cmd.ExecuteNonQuery();
             }
+            mdr.Close();
             conn.Close();
         }
 
