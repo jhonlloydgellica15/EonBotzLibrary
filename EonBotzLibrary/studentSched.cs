@@ -18,6 +18,7 @@ namespace EonBotzLibrary
         public DataTable dt = new DataTable();
         public DataTable dtFilter = new DataTable();
         public DataTable dtStudentSched = new DataTable();
+        public DataTable dtSectioning = new DataTable();
         public List<string> datafill = new List<string>();
 
         public string category { set; get; }
@@ -32,7 +33,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c,studentSched e where a.roomId = d.roomId and a.schedid = c.schedID and c.SectionCategoryID = '" + category + "' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid having count(e.schedid) < a.maxstudent", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c,studentSched e where a.roomId = d.roomId and a.schedid = c.schedID and c.SectionCategoryID = '" + category + "' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid having count(e.schedid) < a.maxstudent", conn))    
             {
                 mdr = cmd.ExecuteReader();
 
@@ -90,6 +91,70 @@ namespace EonBotzLibrary
             }
         }
 
+        public void viewSectiong()
+        {
+            conn = connect.getcon();
+            conn.Open();
+
+            dt.Clear();
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and c.SectionCategoryID = '" + category + "' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid", conn))
+            {
+                mdr = cmd.ExecuteReader();
+
+                dt.Columns.Clear();
+                dt.Columns.Add("SchedID");
+                dt.Columns.Add("SubjectCode");
+                dt.Columns.Add("SubjectTitle");
+                dt.Columns.Add("RoomName");
+                dt.Columns.Add("Day");
+                dt.Columns.Add("Timestart");
+                dt.Columns.Add("Timeend");
+                dt.Columns.Add("MaxStudent");
+                dt.Columns.Add("Status");
+                dt.Columns.Add("lablec");
+                dt.Columns.Add("total");
+
+
+                while (mdr.Read())
+                {
+                    //totalUnits = mdr[11].ToString();
+                    totalUnits = mdr[11].ToString();
+                    string foo = mdr[4].ToString(), bar = string.Empty;
+
+                    foreach (char c in foo)
+                    {
+                        if (c == '1')
+                        {
+                            bar += "M";
+                        }
+                        else if (c == '2')
+                        {
+                            bar += "T";
+                        }
+                        else if (c == '3')
+                        {
+                            bar += "W";
+                        }
+                        else if (c == '4')
+                        {
+                            bar += "Th";
+                        }
+                        else if (c == '5')
+                        {
+                            bar += "F";
+                        }
+                        else if (c == '6')
+                        {
+                            bar += "S";
+                        }
+                    }
+                    dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), bar, mdr[5].ToString(), mdr[6].ToString(), mdr[7].ToString(), mdr[8].ToString(), mdr[9].ToString() + "/" + mdr[10].ToString(), mdr[11].ToString());
+                    //dtSectioning.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
+                }
+                conn.Close();
+                mdr.Close();
+            }
+        }
 
         public void displayFilter()
         {
@@ -97,7 +162,8 @@ namespace EonBotzLibrary
             conn.Open();
 
             dtFilter.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c,studentSched e where a.roomId = d.roomId and a.schedid = c.schedID and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid having count(e.schedid) < a.maxstudent", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b where a.roomId = d.roomId and a.subjectcode = b.subjectcode and a.status = 'available' group by a.schedid", conn))
+            //using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c,studentSched e where a.roomId = d.roomId and a.schedid = c.schedID and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid having count(e.schedid) < a.maxstudent", conn))
             {
                 mdr = cmd.ExecuteReader();
 
@@ -162,8 +228,8 @@ namespace EonBotzLibrary
 
             dtStudentSched.Clear();
 
-                                           //select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b, Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid
-            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, a.maxStudent,a.status, e.lec, e.lab, e.totalunits, d.firstname, d.lastname, d.gender, d.course from schedule a, studentSched b, rooms c, student d, subjects e,studentSched f WHERE b.studentID = d.studentID and a.roomId = c.roomId and a.subjectCode = e.subjectcode and a.status = 'available' and b.studentID = '" + studentID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%' having count(f.schedid) < a.maxstudent", conn))
+            //select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b, Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid
+            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, a.maxStudent,a.status, e.lec, e.lab, e.totalunits, d.firstname, d.lastname, d.gender, d.course from schedule a, studentSched b, rooms c, student d, subjects e,studentSched f WHERE b.studentID = d.studentID and a.roomId = c.roomId and a.subjectCode = e.subjectcode and a.status = 'available' and b.studentID = '" + studentID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
             {
 
                 mdr = cmd.ExecuteReader();

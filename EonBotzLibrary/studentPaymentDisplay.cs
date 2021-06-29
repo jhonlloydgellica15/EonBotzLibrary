@@ -58,7 +58,7 @@ namespace EonBotzLibrary
                     dt.Rows.Add(mdr[0].ToString(), $"{mdr[1].ToString()} {mdr[2].ToString()}", mdr[3].ToString());
                 
                 }
-                conn.Close();
+                conn.Close();   
                 conn.Dispose();
             }
         }

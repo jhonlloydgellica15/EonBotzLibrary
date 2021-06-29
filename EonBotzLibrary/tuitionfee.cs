@@ -45,6 +45,8 @@ namespace EonBotzLibrary
                 {
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString());
                 }
+                conn.Close();
+                mdr.Close();
             }
         }
         public void select()
@@ -110,6 +112,8 @@ namespace EonBotzLibrary
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString() +"/"+mdr[3].ToString(),mdr[4].ToString(),mdr[5].ToString(),mdr[6].ToString());
 
                 }
+                conn.Close();
+                mdr.Close();
             }
 
         }
@@ -129,6 +133,8 @@ namespace EonBotzLibrary
                     //dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString());
                     total = mdr[0].ToString();
                 }
+                conn.Close();
+                mdr.Close();
             }
 
         }

@@ -35,6 +35,7 @@ namespace EonBotzLibrary
                 cmd.ExecuteNonQuery();
             }
             conn.Close();
+            mdr.Close();
         }
 
         public void UPDATE_DATA()
@@ -48,6 +49,8 @@ namespace EonBotzLibrary
                 cmd.Parameters.AddWithValue("@desc", description);
                 cmd.ExecuteNonQuery();
             }
+            conn.Close();
+            mdr.Close();
         }
         public void VIEW_DATA()
         {
@@ -78,6 +81,8 @@ namespace EonBotzLibrary
                 {
                     dt.Rows.Add(mdr[0].ToString(), mdr[1].ToString(), mdr[2].ToString(), mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString());
                 }
+                conn.Close();
+                mdr.Close();
             }
         }
 
