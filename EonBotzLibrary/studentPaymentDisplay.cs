@@ -43,20 +43,21 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select c.studentid,c.firstname,c.lastname,b.total  from  Billing b , studentSched a,student c where b.studentSchedID = a.studentSchedID and c.studentid = a.studentid", conn))
+            using (cmd = new MySqlCommand("select c.studentid,c.firstname,c.lastname,b.total, c.course, c.gender, c.presentAddress from  Billing b , studentSched a,student c where b.studentSchedID = a.studentSchedID and c.studentid = a.studentid", conn))
             {
                 mdr = cmd.ExecuteReader();
                 dt.Columns.Clear();
 
                 dt.Columns.Add("StudentID");
                 dt.Columns.Add("Name");
-
                 dt.Columns.Add("Total");
+                dt.Columns.Add("Course");
+                dt.Columns.Add("Gender");
+                dt.Columns.Add("PresentAddress");
 
                 while (mdr.Read())
                 {
-                    dt.Rows.Add(mdr[0].ToString(), $"{mdr[1].ToString()} {mdr[2].ToString()}", mdr[3].ToString());
-                
+                    dt.Rows.Add(mdr[0].ToString(), $"{mdr[1].ToString()} {mdr[2].ToString()}", mdr[3].ToString(), mdr[4].ToString(), mdr[5].ToString(), mdr[6].ToString());
                 }
                 conn.Close();   
                 conn.Dispose();
