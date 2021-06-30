@@ -96,7 +96,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,e.lec,e.lab, e.totalunits from rooms d, subjects e, schedule a,Sectioning b,studentSched c where d.roomId =a.roomId and e.subjectCode = a.subjectCode and b.SectionCategoryID ='"+category+"' and a.schedID regexp b.schedID group by b.sectionID having count(c.studentSchedID) < a.maxStudent", conn))
+            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, a.maxStudent,a.status, e.lec, e.lab, e.totalunits, d.firstname, d.lastname, d.gender, d.course from schedule a, studentSched b, rooms c, student d, subjects e,studentSched f WHERE b.studentID = d.studentID and a.roomId = c.roomId and a.subjectCode = e.subjectcode and a.status = 'available' and b.studentID = '" + studentID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
             {
                 mdr = cmd.ExecuteReader();
 
