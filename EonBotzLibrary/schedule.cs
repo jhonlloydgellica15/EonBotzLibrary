@@ -190,7 +190,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("SELECT a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status from schedule a, rooms b where a.roomId = b.roomId and a.status ='available'", conn))
+            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name ,a.courseCode,a.date,a.maxStudent - count(b.studentSchedID),a.timeStart,a.timeEnd,a.status from schedule a   left join rooms c on c.roomId = a.roomId  left join  studentSched b on b.schedid regexp a.schedid group by a.schedid", conn))
             {
                 mdr = cmd.ExecuteReader();
 
