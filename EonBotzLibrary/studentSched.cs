@@ -33,7 +33,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c,studentSched e where a.roomId = d.roomId and a.schedid = c.schedID and c.SectionCategoryID = '" + category + "' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid having count(e.schedid) < a.maxstudent", conn))    
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c,studentSched e where a.roomId = d.roomId and a.schedid regexp c.schedID and c.SectionCategoryID = '"+category+"' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid having count(e.schedid) < a.maxstudent", conn))    
             {
                 mdr = cmd.ExecuteReader();
 
@@ -96,7 +96,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, a.maxStudent,a.status, e.lec, e.lab, e.totalunits, d.firstname, d.lastname, d.gender, d.course from schedule a, studentSched b, rooms c, student d, subjects e,studentSched f WHERE b.studentID = d.studentID and a.roomId = c.roomId and a.subjectCode = e.subjectcode and a.status = 'available' and b.studentID = '" + studentID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,e.lec,e.lab, e.totalunits,count(studentSchedID) from schedule a left join Sectioning l on l.SectionCategoryID =3 left join studentSched c on c.schedId regexp a.schedID left join rooms d on d.roomId =a.roomId left join subjects e on e.subjectCode = a.subjectCode   group by a.schedId having count(c.schedID) < a.maxStudent", conn))
             {
                 mdr = cmd.ExecuteReader();
 
