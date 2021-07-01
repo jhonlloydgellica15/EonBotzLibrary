@@ -117,6 +117,12 @@ namespace EonBotzLibrary
             DialogResult dr = MessageBox.Show("Do you want to preview ?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             return dr == DialogResult.Yes ? true : false;
         }
+
+        public static bool openUnit()
+        {
+            DialogResult dr = MessageBox.Show("Do you want to activate this unit price?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return dr == DialogResult.Yes ? true : false;
+        }
         public static bool AddConfirmation()
         {
             DialogResult dr = MessageBox.Show("Do you want to Add ?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
