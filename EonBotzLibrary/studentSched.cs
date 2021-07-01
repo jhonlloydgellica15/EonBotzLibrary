@@ -33,7 +33,7 @@ namespace EonBotzLibrary
             conn.Open();
 
             dt.Clear();
-            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b,Sectioning c,studentSched e where a.roomId = d.roomId and a.schedid regexp c.schedID and c.SectionCategoryID = '"+category+"' and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid having count(e.schedid) < a.maxstudent", conn))    
+            using (cmd = new MySqlCommand("select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,f.lec,f.lab, f.totalunits,count(c.studentSchedID) from schedule a cross join rooms d cross join subjects f cross join Sectioning b on a.schedID = b.schedID left join studentSched c on c.schedID regexp a.schedID where d.roomId =a.roomId and f.subjectCode = a.subjectCode and b.SectionCategoryID = '"+category+"'  group by b.sectionID having count(c.studentSchedID) < a.maxstudent", conn))    
             {
                 mdr = cmd.ExecuteReader();
 
