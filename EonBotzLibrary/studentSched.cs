@@ -288,12 +288,12 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
+
             dtStudentSched.Clear();
-
             //select a.schedid, a.subjectcode, a.subjectTitle,d.name,a.date,a.timeStart,a.timeEnd,a.maxStudent,a.status,b.lec,b.lab, b.totalunits from rooms d, schedule a ,subjects b, Sectioning c where a.roomId = d.roomId and a.schedid = c.schedID and a.subjectcode = b.subjectcode and a.status = 'available' group by c.schedid
-            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, a.maxStudent,a.status, e.lec, e.lab, e.totalunits, d.firstname, d.lastname, d.gender, d.course from schedule a, studentSched b, rooms c, student d, subjects e,studentSched f WHERE b.studentID = d.studentID and a.roomId = c.roomId and a.subjectCode = e.subjectcode and a.status = 'available' and b.studentID = '" + studentID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
+            using (cmd = new MySqlCommand("select distinct a.schedID, a.subjectCode, a.subjectTitle, c.name, a.date, a.timeStart, a.timeEnd, a.maxStudent,a.status, e.lec, e.lab, e.totalunits, d.firstname, d.lastname, d.gender, d.course from schedule a, studentSched b, rooms c, student d, subjects e,studentSched f WHERE b.studentID = d.studentID and a.roomId = c.roomId and a.subjectCode = e.subjectcode and a.status = 'available' and b.studentID = '" + studentID + "' and a.schedID like '%" + getSchedID + "%'  and b.schedid  like '%" + getSchedID + "%'", conn))
             {
-
+           
                 mdr = cmd.ExecuteReader();
 
                 dtStudentSched.Columns.Clear();
