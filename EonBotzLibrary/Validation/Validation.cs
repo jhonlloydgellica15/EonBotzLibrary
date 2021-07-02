@@ -118,6 +118,12 @@ namespace EonBotzLibrary
             return dr == DialogResult.Yes ? true : false;
         }
 
+        public static bool openPercentage()
+        {
+            DialogResult dr = MessageBox.Show("Do you want to activate this Exam Percentage?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return dr == DialogResult.Yes ? true : false;
+        }
+
         public static bool openUnit()
         {
             DialogResult dr = MessageBox.Show("Do you want to activate this unit price?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -210,7 +216,7 @@ namespace EonBotzLibrary
         //Alert Message Here
         public static void AlertSuccess(string message)
         {
-            MessageBox.Show(message, "Message Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"{message}" + " successfully", "Message Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public static void AlertDanger(string message)
