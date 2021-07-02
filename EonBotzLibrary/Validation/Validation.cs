@@ -118,6 +118,12 @@ namespace EonBotzLibrary
             return dr == DialogResult.Yes ? true : false;
         }
 
+        public static bool deletePercentage()
+        {
+            DialogResult dr = MessageBox.Show("Do you want to delete this Exam Percentage?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return dr == DialogResult.Yes ? true : false;
+        }
+
         public static bool openPercentage()
         {
             DialogResult dr = MessageBox.Show("Do you want to activate this Exam Percentage?", "Add Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
