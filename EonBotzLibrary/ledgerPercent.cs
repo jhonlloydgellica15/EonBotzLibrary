@@ -29,7 +29,7 @@ namespace EonBotzLibrary
             conn = connect.getcon();
             conn.Open();
 
-            cmd = new MySqlCommand("select prelim,midterm,semiFinals,finals,downpayment from percentage where status ='Deactivate' ", conn);
+            cmd = new MySqlCommand("select prelim,midterm,semiFinals,finals,downpayment from percentage where status ='Active' ", conn);
             mdr = cmd.ExecuteReader();
             while (mdr.Read())
             {
