@@ -243,15 +243,14 @@ namespace EonBotzLibrary
                 }
             }
         }
-
         public void filterSched()
         {
             conn = connect.getcon();
             conn.Open();
 
             dtFilter.Clear();
-          //  SELECT a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status FROM schedule a, rooms b where a.roomID = b.roomiD and a.subjectTitle LIKE '%" + textValue + "%'  OR a.subjectCode LIKE '%" + textValue + "%' and a.roomId = b.roomid and a.status = 'available' group by a.schedid
-            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name ,a.courseCode,a.date,a.maxStudent - count(b.studentSchedID),a.timeStart,a.timeEnd,a.status from schedule a   left join rooms c on c.roomId = a.roomId  left join  studentSched b on b.schedid regexp a.schedid where a.subjectCode like '%"+textValue+"%' or a.subjectTitle like '%"+textValue+"%'  group by a.schedid", conn))
+            //using (cmd = new MySqlCommand("SELECT  a.schedID, a.subjectCode, a.subjectTitle, b.name, a.courseCode, a.date, a.maxStudent, a.timeStart, a.timeEnd, a.status FROM schedule a, rooms b where a.roomID = b.roomiD and a.subjectTitle LIKE '%" + textValue + "%'  OR  a.subjectCode LIKE '%" + textValue + "%' and a.roomId = b.roomid and a.status ='available' group by a.schedid", conn))
+            using (cmd = new MySqlCommand("select a.schedID, a.subjectCode, a.subjectTitle, c.name ,a.courseCode,a.date,a.maxStudent - count(b.studentSchedID),a.timeStart,a.timeEnd,a.status from schedule a left join rooms c on c.roomId = a.roomId and a.status = 'available' left join  studentSched b on b.schedid regexp a.schedid group by a.schedid", conn))
             {
                 mdr = cmd.ExecuteReader();
 
