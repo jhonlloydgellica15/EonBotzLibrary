@@ -230,7 +230,7 @@ namespace EonBotzLibrary
                 mdr = cmd.ExecuteReader();
 
                 dtFilter.Columns.Clear();
-                 
+
                 dtFilter.Columns.Add("SchedID");
                 dtFilter.Columns.Add("SubjectCode");
                 dtFilter.Columns.Add("SubjectTitle");
