@@ -49,10 +49,10 @@ namespace EonBotzLibrary
                 if (value.Text.StartsWith("0"))
                 {
                     Validator.AlertDanger("Remove 0 at first");
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
         //Check if combobox is empty
         public static bool isEmptyCmb(ComboBox[] values)
