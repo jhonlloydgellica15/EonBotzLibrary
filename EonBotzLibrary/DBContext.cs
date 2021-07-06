@@ -11,7 +11,7 @@ namespace EonBotzLibrary
     public static class DBContext
     {
 
-        static MySqlConnection connection = new MySqlConnection("server=192.168.1.3;user id=smsadmin; password=SmsEonbotz2016!;database=smsdb;port=3306");
+        static MySqlConnection connection = new MySqlConnection("server=localhost;user id=root; password=12345;database=smsdb;port=3306");
         static MySqlCompiler compiler = new MySqlCompiler();
 
         public static QueryFactory GetContext() => new QueryFactory(connection, compiler);

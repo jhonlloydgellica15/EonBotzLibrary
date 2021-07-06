@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Data;
+using SqlKata.Execution;
 
 namespace EonBotzLibrary
 {
@@ -35,6 +36,7 @@ namespace EonBotzLibrary
         public string studentdownpayment { set; get; }
         public string dateForDown { set; get; }
         public string remarksFordown { set; get; }
+        public int orNumber { set; get; }
 
         public void display()
         {
@@ -117,14 +119,58 @@ namespace EonBotzLibrary
         }
         public void insertpayment()
         {
-            conn = connect.getcon();
-            conn.Open();
+            try
+            {
+                var endNum = DBContext.GetContext().Query("ornumber").Where("status", "Active").First();
 
-            dt.Clear();
-            cmd = new MySqlCommand("insert into payment(billingid,amount,remarks,paymentmethod,date,time,status) values ('" + billingid + "','" + amount + "','" + remarks + "','" + paymentMethod + "','" + DateTime.Now.ToShortDateString() + "','" + DateTime.Now.ToShortTimeString() + "','" + status + "')", conn);
-            cmd.ExecuteNonQuery();
-            conn.Close();
-            conn.Dispose();
+                DBContext.GetContext().Query("ornumber")
+                                 .Join("payment", "payment.orNumber", "ornumber.startNum")
+                                 .Where("ornumber.status", "Active")
+                                 .First();
+
+                var maxOr = DBContext.GetContext().Query("payment").OrderByDesc("paymentID").First();
+
+                if (maxOr.orNumber == endNum.endNum)
+                {
+                    Validator.AlertDanger("OR Number exceed");
+                }
+                else
+                {
+                    //DBContext.GetContext().Query("payment").Insert(new
+                    //{
+                    //    orNumber = maxOr.orNumber + 1,
+                        
+                    //});
+                    conn = connect.getcon();
+                    conn.Open();
+                    int number = maxOr.orNumber + 1;
+                    dt.Clear();
+                    cmd = new MySqlCommand("insert into payment(billingid,amount,remarks,paymentmethod,date,time,status, orNumber) values ('" + billingid + "','" + amount + "','" + remarks + "','" + paymentMethod + "','" + DateTime.Now.ToShortDateString() + "','" + DateTime.Now.ToShortTimeString() + "','" + status + "','" + number + "')", conn);
+                    cmd.ExecuteNonQuery();
+                    Validator.AlertSuccess("Payment");
+                    conn.Close();
+                    conn.Dispose();
+
+                }
+            }
+            catch (Exception)
+            {
+                var value = DBContext.GetContext().Query("ornumber").Where("status", "Active").First();
+                conn = connect.getcon();
+                conn.Open();
+
+                dt.Clear();
+                cmd = new MySqlCommand("insert into payment(billingid,amount,remarks,paymentmethod,date,time,status, orNumber) values ('" + billingid + "','" + amount + "','" + remarks + "','" + paymentMethod + "','" + DateTime.Now.ToShortDateString() + "','" + DateTime.Now.ToShortTimeString() + "','" + status + "','" + value.startNum + "')", conn);
+                cmd.ExecuteNonQuery();
+                Validator.AlertSuccess("Payment");
+                conn.Close();
+                conn.Dispose();
+            }
+
+
+           
+
+
         }
 
         public void viewtransaction()
